@@ -1,5 +1,10 @@
 import { useState, type FormEvent } from "react";
-import type { SalgsvurderingInput, Tilstand } from "../../../shared/recommendation/types";
+import type {
+  Hastverk,
+  Innsats,
+  SalgsvurderingInput,
+  Tilstand,
+} from "../../../shared/recommendation/types";
 
 type Props = {
   onSubmit: (input: SalgsvurderingInput) => void;
@@ -10,18 +15,49 @@ const TILSTANDER: { verdi: Tilstand; label: string }[] = [
   { verdi: "god", label: "God" },
   { verdi: "akseptabel", label: "Akseptabel" },
   { verdi: "darlig", label: "Dårlig" },
+  { verdi: "ikke-kjorbar", label: "Ikke kjørbar" },
 ];
+
+const HASTVERK: { verdi: Hastverk; label: string }[] = [
+  { verdi: "haster", label: "Haster — vil selge raskest mulig" },
+  { verdi: "normal", label: "Normal — grei tid, ikke i noen hast" },
+  { verdi: "fleksibel", label: "Fleksibel — kan vente på riktig pris" },
+];
+
+const INNSATS: { verdi: Innsats; label: string }[] = [
+  { verdi: "minimalt", label: "Minimalt — vil ha minst mulig jobb" },
+  { verdi: "noe", label: "Noe — greier annonse og visning" },
+  { verdi: "mye", label: "Mye — vil legge ned jobben for best pris" },
+];
+
+type HeftelserVerdi = "nei" | "ja" | "vet-ikke";
 
 export function ConditionForm({ onSubmit }: Props) {
   const [kilometerstand, setKilometerstand] = useState("");
   const [tilstand, setTilstand] = useState<Tilstand>("god");
+  const [hastverk, setHastverk] = useState<Hastverk>("normal");
+  const [onsketInnsats, setOnsketInnsats] = useState<Innsats>("noe");
   const [planleggerNybilkjop, setPlanleggerNybilkjop] = useState(false);
+  const [heftelser, setHeftelser] = useState<HeftelserVerdi>("vet-ikke");
+  const [antattVerdi, setAntattVerdi] = useState("");
 
   function handleSubmit(e: FormEvent) {
     e.preventDefault();
     const km = Number(kilometerstand);
     if (!Number.isFinite(km) || km < 0) return;
-    onSubmit({ kilometerstand: km, tilstand, planleggerNybilkjop });
+
+    const verdi = antattVerdi.trim() === "" ? null : Number(antattVerdi);
+    if (verdi !== null && (!Number.isFinite(verdi) || verdi < 0)) return;
+
+    onSubmit({
+      kilometerstand: km,
+      tilstand,
+      hastverk,
+      onsketInnsats,
+      planleggerNybilkjop,
+      heftelser: heftelser === "vet-ikke" ? null : heftelser === "ja",
+      antattVerdi: verdi,
+    });
   }
 
   return (
@@ -53,6 +89,61 @@ export function ConditionForm({ onSubmit }: Props) {
             </option>
           ))}
         </select>
+      </label>
+
+      <label className="flex flex-col gap-1 text-sm">
+        Hvor mye haster salget?
+        <select
+          value={hastverk}
+          onChange={(e) => setHastverk(e.target.value as Hastverk)}
+          className="rounded-md border border-slate-300 px-3 py-2"
+        >
+          {HASTVERK.map((h) => (
+            <option key={h.verdi} value={h.verdi}>
+              {h.label}
+            </option>
+          ))}
+        </select>
+      </label>
+
+      <label className="flex flex-col gap-1 text-sm">
+        Hvor mye jobb vil du legge inn selv?
+        <select
+          value={onsketInnsats}
+          onChange={(e) => setOnsketInnsats(e.target.value as Innsats)}
+          className="rounded-md border border-slate-300 px-3 py-2"
+        >
+          {INNSATS.map((i) => (
+            <option key={i.verdi} value={i.verdi}>
+              {i.label}
+            </option>
+          ))}
+        </select>
+      </label>
+
+      <label className="flex flex-col gap-1 text-sm">
+        Er det pant eller gjeld registrert på bilen?
+        <select
+          value={heftelser}
+          onChange={(e) => setHeftelser(e.target.value as HeftelserVerdi)}
+          className="rounded-md border border-slate-300 px-3 py-2"
+        >
+          <option value="vet-ikke">Vet ikke</option>
+          <option value="nei">Nei</option>
+          <option value="ja">Ja</option>
+        </select>
+      </label>
+
+      <label className="flex flex-col gap-1 text-sm">
+        Ditt eget verdianslag i kroner (valgfritt)
+        <input
+          type="number"
+          min={0}
+          value={antattVerdi}
+          onChange={(e) => setAntattVerdi(e.target.value)}
+          className="rounded-md border border-slate-300 px-3 py-2"
+          placeholder="F.eks. 150000"
+        />
       </label>
 
       <label className="flex items-center gap-2 text-sm">
