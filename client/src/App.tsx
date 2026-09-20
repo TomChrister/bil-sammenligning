@@ -1,16 +1,17 @@
 import { useState } from "react";
 import { slaOppKjoretoy } from "./api/vehicleClient";
-import { anbefalSalgskanal } from "../../shared/recommendation/engine";
+import { beregnSalgsvurdering, type SalgsvurderingResultat } from "../../shared/recommendation/score";
 import type { Vehicle } from "../../shared/vehicle";
-import type { AnbefalingResultat, SalgsvurderingInput } from "../../shared/recommendation/types";
+import type { SalgsvurderingInput } from "../../shared/recommendation/types";
 import { RegnrForm } from "./components/RegnrForm";
 import { VehicleResult } from "./components/VehicleResult";
 import { ConditionForm } from "./components/ConditionForm";
 import { RecommendationView } from "./components/RecommendationView";
+import { HowItWorks } from "./components/HowItWorks";
 
 function App() {
   const [vehicle, setVehicle] = useState<Vehicle | null>(null);
-  const [anbefaling, setAnbefaling] = useState<AnbefalingResultat | null>(null);
+  const [vurdering, setVurdering] = useState<SalgsvurderingResultat | null>(null);
   const [loading, setLoading] = useState(false);
   const [feil, setFeil] = useState<string | null>(null);
 
@@ -18,7 +19,7 @@ function App() {
     setLoading(true);
     setFeil(null);
     setVehicle(null);
-    setAnbefaling(null);
+    setVurdering(null);
 
     const respons = await slaOppKjoretoy(kjennemerke);
     setLoading(false);
@@ -33,7 +34,7 @@ function App() {
 
   function handleSalgsvurdering(input: SalgsvurderingInput) {
     if (!vehicle) return;
-    setAnbefaling(anbefalSalgskanal(vehicle, input));
+    setVurdering(beregnSalgsvurdering(vehicle, input));
   }
 
   return (
@@ -44,6 +45,8 @@ function App() {
           Slå opp registreringsnummeret ditt og få en veiledende anbefaling om salgskanal.
         </p>
       </header>
+
+      <HowItWorks />
 
       <RegnrForm onSubmit={handleOppslag} loading={loading} />
 
@@ -56,7 +59,7 @@ function App() {
         </>
       )}
 
-      {anbefaling && <RecommendationView resultat={anbefaling} />}
+      {vurdering && <RecommendationView resultat={vurdering} />}
     </main>
   );
 }

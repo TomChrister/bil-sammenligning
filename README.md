@@ -1,9 +1,10 @@
 # Bilsalg-anbefaler
 
 Hobbyprosjekt: slå opp et norsk registreringsnummer, se tekniske data fra Statens
-vegvesen (Autosys), oppgi kilometerstand og tilstand, og få en veiledende
-anbefaling om salgskanal (Nettbil, FINN privat, innbytte hos forhandler,
-oppkjøpstjenester som Rebil).
+vegvesen (Autosys), oppgi kilometerstand, tilstand og noen få spørsmål om
+situasjonen din, og få en veiledende rangering av salgskanaler (privatsalg,
+forhandlerauksjon, fastpris-oppkjøp, kommisjon, innbytte og auksjonshus), med
+faktiske aktører — som Nettbil, FINN og Rebil — foreslått under riktig kanal.
 
 Ikke en offisiell eller Vegvesen-godkjent tjeneste. Ingen prisestimat gis.
 
