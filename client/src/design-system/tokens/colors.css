@@ -1,0 +1,110 @@
+:root {
+  /* ---------- Asphalt: cool neutral ramp (the brand's structural colour) ---------- */
+  --asphalt-0: #ffffff;
+  --asphalt-25: #f7f8fa;
+  --asphalt-50: #f1f3f6;
+  --asphalt-100: #e6e9ee;
+  --asphalt-200: #d3d8e0;
+  --asphalt-300: #b2bac6;
+  --asphalt-400: #8a93a2;
+  --asphalt-500: #67707f;
+  --asphalt-600: #4c5462;
+  --asphalt-700: #363d48;
+  --asphalt-800: #232932;
+  --asphalt-900: #161b22;
+  --asphalt-950: #0d1116;
+
+  /* ---------- Kobolt: primary. Trust, links, primary actions ---------- */
+  --kobolt-50: #eef1fe;
+  --kobolt-100: #dce2fd;
+  --kobolt-200: #b9c6fb;
+  --kobolt-300: #8da0f7;
+  --kobolt-400: #5d74f0;
+  --kobolt-500: #2f4be6;
+  --kobolt-600: #1f37cc;
+  --kobolt-700: #182ba3;
+  --kobolt-800: #152478;
+  --kobolt-900: #121d57;
+
+  /* ---------- Sitron: acid accent. Rank 1, highlights, on-dark CTAs ---------- */
+  --sitron-100: #f3ffcf;
+  --sitron-200: #e7ff9f;
+  --sitron-300: #d8fb63;
+  --sitron-400: #c8f03a;
+  --sitron-500: #afd91f;
+  --sitron-600: #8aad12;
+
+  /* ---------- Semantic hues ---------- */
+  --gronn-100: #e4f5ee;
+  --gronn-500: #12906a;
+  --gronn-600: #0f7a57;
+  --gronn-700: #0b5c42;
+
+  --amber-100: #fdf1df;
+  --amber-500: #c47a0e;
+  --amber-600: #a9650a;
+  --amber-700: #7f4b06;
+
+  --rust-100: #fcebe8;
+  --rust-500: #d24232;
+  --rust-600: #b93326;
+  --rust-700: #8f271d;
+
+  /* ================= Semantic aliases: use these in components ================= */
+
+  /* Text */
+  --text-primary: var(--asphalt-950);
+  --text-secondary: var(--asphalt-600);
+  --text-muted: var(--asphalt-500);
+  --text-faint: var(--asphalt-400);
+  --text-inverse: var(--asphalt-0);
+  --text-inverse-secondary: var(--asphalt-300);
+  --text-link: var(--kobolt-600);
+  --text-link-hover: var(--kobolt-700);
+  --text-on-accent: var(--asphalt-950);
+  --text-success: var(--gronn-700);
+  --text-warning: var(--amber-700);
+  --text-danger: var(--rust-700);
+
+  /* Surfaces */
+  --surface-page: var(--asphalt-25);
+  --surface-card: var(--asphalt-0);
+  --surface-raised: var(--asphalt-0);
+  --surface-sunken: var(--asphalt-50);
+  --surface-muted: var(--asphalt-100);
+  --surface-inverse: var(--asphalt-950);
+  --surface-inverse-raised: var(--asphalt-900);
+  --surface-primary: var(--kobolt-500);
+  --surface-primary-hover: var(--kobolt-600);
+  --surface-primary-quiet: var(--kobolt-50);
+  --surface-accent: var(--sitron-400);
+  --surface-accent-quiet: var(--sitron-100);
+  --surface-success-quiet: var(--gronn-100);
+  --surface-warning-quiet: var(--amber-100);
+  --surface-danger-quiet: var(--rust-100);
+
+  /* Borders */
+  --border-subtle: var(--asphalt-100);
+  --border-default: var(--asphalt-200);
+  --border-strong: var(--asphalt-300);
+  --border-inverse: #ffffff1f;
+  --border-primary: var(--kobolt-500);
+  --border-focus: var(--kobolt-500);
+
+  /* Plate (Norwegian registration plate) */
+  --plate-face: #ffffff;
+  --plate-ink: #16181c;
+  --plate-band: #0a2a8c;
+  --plate-band-ink: #ffffff;
+
+  /* Rank ladder — used by the channel ranking, strongest to weakest */
+  --rank-1: var(--sitron-400);
+  --rank-2: var(--kobolt-200);
+  --rank-3: var(--asphalt-200);
+  --rank-rest: var(--asphalt-100);
+
+  /* Effects */
+  --overlay-scrim: #0d1116b8;
+  --focus-ring: 0 0 0 3px #2f4be647;
+  --focus-ring-inverse: 0 0 0 3px #c8f03a5c;
+}

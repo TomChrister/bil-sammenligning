@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { hentKjoretoydata, AutosysError } from "../autosys/client";
+import { hentKjoretoydata, AutosysError, AutosysKonfigurasjonsfeil } from "../autosys/client";
 import { normalizeVehicle } from "../autosys/normalize";
 import { vehicleCache } from "../cache/vehicleCache";
 import { isValidPlate, normalizePlate } from "../utils/validatePlate";
@@ -49,10 +49,26 @@ vehicleRouter.post("/vehicle", async (req, res) => {
   } catch (err) {
     const status = err instanceof AutosysError ? err.status : undefined;
     console.error(`Autosys-oppslag feilet for ${maskPlate(plate)}`, status ?? err);
+
+    if (err instanceof AutosysKonfigurasjonsfeil) {
+      const response: VehicleLookupResponse = {
+        ok: false,
+        error: "Tjenesten er ikke riktig konfigurert på serveren. Kontakt driftsansvarlig.",
+      };
+      res.status(500).json(response);
+      return;
+    }
+
+    // Nettverksfeil (timeout/ECONNRESET) eller 5xx betyr som regel at Statens
+    // vegvesen sin egen tjeneste er nede eller ustabil, ikke at noe er galt hos oss.
+    const tjenestenErNede = status === undefined || status >= 500;
+
     const response: VehicleLookupResponse = {
       ok: false,
-      error: "Klarte ikke hente kjøretøydata akkurat nå",
+      error: tjenestenErNede
+        ? "Statens vegvesen sin oppslagstjeneste er utilgjengelig eller ustabil akkurat nå. Prøv igjen om litt."
+        : "Klarte ikke hente kjøretøydata akkurat nå",
     };
-    res.status(502).json(response);
+    res.status(tjenestenErNede ? 503 : 502).json(response);
   }
 });

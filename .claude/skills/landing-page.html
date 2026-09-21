@@ -1,0 +1,85 @@
+<!-- @dsCard group="Web" viewport="1280x820" name="Web — recommender flow" subtitle="Landing → plate lookup → four questions → ranked channels → channel detail" -->
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<title>Bilsalg-anbefaler — web</title>
+<link rel="stylesheet" href="../../styles.css">
+<link rel="stylesheet" href="kit.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+<script type="text/babel" src="data.jsx"></script>
+<script type="text/babel" src="Chrome.jsx"></script>
+<script type="text/babel" src="LandingScreen.jsx"></script>
+<script type="text/babel" src="FlowScreens.jsx"></script>
+<script type="text/babel" src="ResultsScreen.jsx"></script>
+<script type="text/babel" src="ChannelDetailScreen.jsx"></script>
+<style>html,body{height:100%}</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel" data-presets="react">
+const { useState } = React;
+
+function App() {
+  const [screen, setScreen] = useState("landing");
+  const [plate, setPlate] = useState("EK 84213");
+  const [loading, setLoading] = useState(false);
+  const [qIndex, setQIndex] = useState(0);
+  const [answers, setAnswers] = useState({ tilstand: "normal", hast: "dager", jobb: "ingen" });
+  const [km, setKm] = useState(148500);
+  const [tab, setTab] = useState("alle");
+  const [toast, setToast] = useState(false);
+  const [channelId, setChannelId] = useState("forhandlerauksjon");
+
+  function lookup() {
+    setLoading(true);
+    setScreen("vehicle");
+    window.setTimeout(() => setLoading(false), 700);
+  }
+  function answer(id, value) {
+    setAnswers((a) => ({ ...a, [id]: value }));
+  }
+  function next() {
+    if (qIndex < window.QUESTIONS.length - 1) setQIndex(qIndex + 1);
+    else setScreen("results");
+  }
+  function back() {
+    if (qIndex > 0) setQIndex(qIndex - 1);
+    else setScreen("vehicle");
+  }
+
+  return (
+    <div className="k-shell">
+      <TopBar
+        compact={screen !== "landing"}
+        onHome={() => { setScreen("landing"); setQIndex(0); }}
+        onStart={lookup}
+      />
+      <main className="k-main">
+        {screen === "landing" ? <LandingScreen onStart={lookup} plate={plate} setPlate={setPlate} /> : null}
+        {screen === "vehicle" ? <VehicleScreen loading={loading} onConfirm={() => { setQIndex(0); setScreen("questions"); }} onBack={() => setScreen("landing")} /> : null}
+        {screen === "questions" ? (
+          <QuestionsScreen index={qIndex} answers={answers} onAnswer={answer} onNext={next} onBack={back} km={km} setKm={setKm} />
+        ) : null}
+        {screen === "results" ? (
+          <ResultsScreen
+            tab={tab} setTab={setTab} toast={toast} setToast={setToast}
+            onDetail={(id) => { setChannelId(id); setScreen("detail"); }}
+            onEdit={() => { setQIndex(0); setScreen("questions"); }}
+            onRestart={() => { setScreen("landing"); setQIndex(0); }}
+          />
+        ) : null}
+        {screen === "detail" ? <ChannelDetailScreen channelId={channelId} onBack={() => setScreen("results")} /> : null}
+      </main>
+      {screen === "landing" ? <SiteFooter /> : null}
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body>
+</html>

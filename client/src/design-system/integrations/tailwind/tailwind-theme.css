@@ -1,0 +1,199 @@
+/* Bilsalg-anbefaler — Tailwind v4 bridge.
+   Maps the design system's CSS variables onto Tailwind's theme so utilities like
+   bg-kobolt-500, text-h1, rounded-lg and shadow-md emit the system's real values.
+
+   Usage in src/index.css:
+     @import "tailwindcss";
+     @import "./styles/design-system/styles.css";
+     @import "./styles/design-system/tailwind-theme.css";
+
+   `@theme inline` means Tailwind inlines var(--…) into the utility, so there is
+   exactly one source of truth: tokens/*.css. Never edit values here. */
+
+@theme inline {
+  /* ---- reset Tailwind's stock palette so stray bg-slate-500 etc. cannot compile ---- */
+  --color-*: initial;
+
+  /* ---- colour ramps ---- */
+  --color-asphalt-0: var(--asphalt-0);
+  --color-asphalt-25: var(--asphalt-25);
+  --color-asphalt-50: var(--asphalt-50);
+  --color-asphalt-100: var(--asphalt-100);
+  --color-asphalt-200: var(--asphalt-200);
+  --color-asphalt-300: var(--asphalt-300);
+  --color-asphalt-400: var(--asphalt-400);
+  --color-asphalt-500: var(--asphalt-500);
+  --color-asphalt-600: var(--asphalt-600);
+  --color-asphalt-700: var(--asphalt-700);
+  --color-asphalt-800: var(--asphalt-800);
+  --color-asphalt-900: var(--asphalt-900);
+  --color-asphalt-950: var(--asphalt-950);
+
+  --color-kobolt-50: var(--kobolt-50);
+  --color-kobolt-100: var(--kobolt-100);
+  --color-kobolt-200: var(--kobolt-200);
+  --color-kobolt-300: var(--kobolt-300);
+  --color-kobolt-400: var(--kobolt-400);
+  --color-kobolt-500: var(--kobolt-500);
+  --color-kobolt-600: var(--kobolt-600);
+  --color-kobolt-700: var(--kobolt-700);
+  --color-kobolt-800: var(--kobolt-800);
+  --color-kobolt-900: var(--kobolt-900);
+
+  --color-sitron-100: var(--sitron-100);
+  --color-sitron-200: var(--sitron-200);
+  --color-sitron-300: var(--sitron-300);
+  --color-sitron-400: var(--sitron-400);
+  --color-sitron-500: var(--sitron-500);
+  --color-sitron-600: var(--sitron-600);
+
+  --color-gronn-100: var(--gronn-100);
+  --color-gronn-500: var(--gronn-500);
+  --color-gronn-600: var(--gronn-600);
+  --color-gronn-700: var(--gronn-700);
+  --color-amber-100: var(--amber-100);
+  --color-amber-500: var(--amber-500);
+  --color-amber-600: var(--amber-600);
+  --color-amber-700: var(--amber-700);
+  --color-rust-100: var(--rust-100);
+  --color-rust-500: var(--rust-500);
+  --color-rust-600: var(--rust-600);
+  --color-rust-700: var(--rust-700);
+
+  /* ---- semantic aliases: prefer these in components ---- */
+  --color-ink: var(--text-primary);
+  --color-ink-secondary: var(--text-secondary);
+  --color-ink-muted: var(--text-muted);
+  --color-ink-faint: var(--text-faint);
+  --color-ink-inverse: var(--text-inverse);
+  --color-ink-link: var(--text-link);
+  --color-ink-on-accent: var(--text-on-accent);
+  --color-ink-success: var(--text-success);
+  --color-ink-warning: var(--text-warning);
+  --color-ink-danger: var(--text-danger);
+
+  --color-page: var(--surface-page);
+  --color-card: var(--surface-card);
+  --color-sunken: var(--surface-sunken);
+  --color-muted: var(--surface-muted);
+  --color-inverse: var(--surface-inverse);
+  --color-inverse-raised: var(--surface-inverse-raised);
+  --color-primary: var(--surface-primary);
+  --color-primary-hover: var(--surface-primary-hover);
+  --color-primary-quiet: var(--surface-primary-quiet);
+  --color-accent: var(--surface-accent);
+  --color-accent-quiet: var(--surface-accent-quiet);
+  --color-success-quiet: var(--surface-success-quiet);
+  --color-warning-quiet: var(--surface-warning-quiet);
+  --color-danger-quiet: var(--surface-danger-quiet);
+
+  --color-line-subtle: var(--border-subtle);
+  --color-line: var(--border-default);
+  --color-line-strong: var(--border-strong);
+  --color-line-inverse: var(--border-inverse);
+  --color-line-focus: var(--border-focus);
+
+  --color-plate-face: var(--plate-face);
+  --color-plate-ink: var(--plate-ink);
+  --color-plate-band: var(--plate-band);
+  --color-rank-1: var(--rank-1);
+  --color-rank-2: var(--rank-2);
+  --color-rank-3: var(--rank-3);
+  --color-rank-rest: var(--rank-rest);
+
+  /* ---- type ---- */
+  --font-core: var(--font-core);
+  --font-display: var(--font-display);
+  --font-mono: var(--font-mono);
+
+  --text-display-xl: var(--text-display-xl);
+  --text-display-xl--line-height: var(--leading-display);
+  --text-display-xl--letter-spacing: var(--tracking-display);
+  --text-display-l: var(--text-display-l);
+  --text-display-l--line-height: var(--leading-display);
+  --text-display-l--letter-spacing: var(--tracking-display);
+  --text-display-m: var(--text-display-m);
+  --text-display-m--line-height: var(--leading-tight);
+  --text-display-m--letter-spacing: var(--tracking-display);
+  --text-h1: var(--text-h1);
+  --text-h1--line-height: var(--leading-tight);
+  --text-h1--letter-spacing: var(--tracking-display);
+  --text-h2: var(--text-h2);
+  --text-h2--line-height: var(--leading-heading);
+  --text-h2--letter-spacing: var(--tracking-heading);
+  --text-h3: var(--text-h3);
+  --text-h3--line-height: var(--leading-heading);
+  --text-h3--letter-spacing: var(--tracking-heading);
+  --text-h4: var(--text-h4);
+  --text-h4--line-height: var(--leading-heading);
+  --text-body-lg: var(--text-body-lg);
+  --text-body-lg--line-height: var(--leading-body);
+  --text-body: var(--text-body);
+  --text-body--line-height: var(--leading-body);
+  --text-body-sm: var(--text-body-sm);
+  --text-body-sm--line-height: var(--leading-body);
+  --text-caption: var(--text-caption);
+  --text-caption--line-height: 1.45;
+  --text-micro: var(--text-micro);
+  --text-micro--line-height: 1.2;
+  --text-micro--letter-spacing: var(--tracking-eyebrow);
+
+  --font-weight-light: var(--weight-light);
+  --font-weight-normal: var(--weight-regular);
+  --font-weight-medium: var(--weight-medium);
+  --font-weight-semibold: var(--weight-semibold);
+  --font-weight-bold: var(--weight-bold);
+  --font-weight-black: var(--weight-black);
+
+  --tracking-display: var(--tracking-display);
+  --tracking-heading: var(--tracking-heading);
+  --tracking-body: var(--tracking-body);
+  --tracking-wide: var(--tracking-wide);
+  --tracking-eyebrow: var(--tracking-eyebrow);
+
+  --leading-display: var(--leading-display);
+  --leading-tight: var(--leading-tight);
+  --leading-heading: var(--leading-heading);
+  --leading-body: var(--leading-body);
+  --leading-relaxed: var(--leading-relaxed);
+
+  /* ---- shape ---- */
+  --radius-xs: var(--radius-xs);
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+  --radius-xl: var(--radius-xl);
+  --radius-2xl: var(--radius-2xl);
+  --radius-pill: var(--radius-pill);
+
+  --shadow-xs: var(--shadow-xs);
+  --shadow-sm: var(--shadow-sm);
+  --shadow-md: var(--shadow-md);
+  --shadow-lg: var(--shadow-lg);
+
+  /* ---- layout ---- */
+  --container-narrow: var(--container-narrow);
+  --container-max: var(--container-max);
+  --container-wide: var(--container-wide);
+
+  /* ---- motion ---- */
+  --ease-out: var(--ease-out);
+  --ease-in-out: var(--ease-in-out);
+  --ease-entrance: var(--ease-entrance);
+  --animate-duration-fast: var(--dur-fast);
+}
+
+/* Spacing needs no mapping: Tailwind's default scale is already this system's 4px
+   grid (p-4 = 16px, p-6 = 24px, gap-2 = 8px). The two control-internal steps map to
+   p-0.5 (2px) and p-1.5 (6px). Control heights: h-9 = 36, h-11 = 44, h-13 = 52,
+   h-15 = 60. Section rhythm: py-20 (80px), py-12 compact (48px). */
+
+/* Utilities the token set implies but Tailwind has no stock equivalent for. */
+@utility font-width-display { font-variation-settings: "wdth" 112; }
+@utility font-width-normal { font-variation-settings: "wdth" 100; }
+@utility font-width-condensed { font-variation-settings: "wdth" 88; }
+@utility tabular { font-variant-numeric: tabular-nums; }
+@utility ring-focus { box-shadow: var(--focus-ring); }
+@utility ring-focus-inverse { box-shadow: var(--focus-ring-inverse); }
+@utility blur-chrome { backdrop-filter: var(--blur-chrome); }
+@utility scrim { background: var(--overlay-scrim); }
