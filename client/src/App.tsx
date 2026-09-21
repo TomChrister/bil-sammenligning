@@ -1,25 +1,36 @@
 import { useState } from "react";
 import { slaOppKjoretoy } from "./api/vehicleClient";
-import { beregnSalgsvurdering, type SalgsvurderingResultat } from "../../shared/recommendation/score";
+import {
+  beregnSalgsvurdering,
+  type KanalResultatMedLeverandorer,
+  type SalgsvurderingResultat,
+} from "../../shared/recommendation/score";
 import type { Vehicle } from "../../shared/vehicle";
 import type { SalgsvurderingInput } from "../../shared/recommendation/types";
-import { RegnrForm } from "./components/RegnrForm";
+import { TopBar } from "./components/TopBar";
+import { LandingScreen } from "./components/LandingScreen";
 import { VehicleResult } from "./components/VehicleResult";
 import { ConditionForm } from "./components/ConditionForm";
 import { RecommendationView } from "./components/RecommendationView";
-import { HowItWorks } from "./components/HowItWorks";
+import { ChannelDetailView } from "./components/ChannelDetailView";
+import { Button } from "./design-system/components/core/Button.jsx";
+
+type Step = "landing" | "vehicle" | "questions" | "results" | "channel-detail";
 
 function App() {
+  const [step, setStep] = useState<Step>("landing");
   const [vehicle, setVehicle] = useState<Vehicle | null>(null);
+  const [svar, setSvar] = useState<SalgsvurderingInput | null>(null);
   const [vurdering, setVurdering] = useState<SalgsvurderingResultat | null>(null);
+  const [valgtKanal, setValgtKanal] = useState<KanalResultatMedLeverandorer | null>(null);
   const [loading, setLoading] = useState(false);
   const [feil, setFeil] = useState<string | null>(null);
 
   async function handleOppslag(kjennemerke: string) {
+    if (kjennemerke.trim().length === 0) return;
+
     setLoading(true);
     setFeil(null);
-    setVehicle(null);
-    setVurdering(null);
 
     const respons = await slaOppKjoretoy(kjennemerke);
     setLoading(false);
@@ -30,37 +41,79 @@ function App() {
     }
 
     setVehicle(respons.vehicle);
+    setStep("vehicle");
   }
 
   function handleSalgsvurdering(input: SalgsvurderingInput) {
     if (!vehicle) return;
+    setSvar(input);
     setVurdering(beregnSalgsvurdering(vehicle, input));
+    setStep("results");
+  }
+
+  function startPaNytt() {
+    setStep("landing");
+    setVehicle(null);
+    setSvar(null);
+    setVurdering(null);
+    setValgtKanal(null);
+    setFeil(null);
   }
 
   return (
-    <main className="mx-auto flex max-w-xl flex-col gap-6 px-4 py-10">
-      <header>
-        <h1 className="text-2xl font-bold">Bilsalg-anbefaler</h1>
-        <p className="text-sm text-slate-500">
-          Slå opp registreringsnummeret ditt og få en veiledende anbefaling om salgskanal.
-        </p>
-      </header>
+    <div className="k-shell">
+      <TopBar
+        onHome={startPaNytt}
+        onStart={() => document.getElementById("skilt-oppslag")?.scrollIntoView({ behavior: "smooth", block: "center" })}
+        compact={step !== "landing"}
+      />
 
-      <HowItWorks />
+      <main className="k-main">
+        {step === "landing" && (
+          <LandingScreen onSubmit={handleOppslag} loading={loading} feil={feil} />
+        )}
 
-      <RegnrForm onSubmit={handleOppslag} loading={loading} />
+        {step === "vehicle" && vehicle && (
+          <div className="mx-auto flex max-w-[var(--container-narrow)] flex-col gap-6 px-4 py-10">
+            <VehicleResult vehicle={vehicle} />
+            <div className="flex justify-between">
+              <Button variant="ghost" onClick={startPaNytt}>
+                Tilbake
+              </Button>
+              <Button onClick={() => setStep("questions")}>Neste</Button>
+            </div>
+          </div>
+        )}
 
-      {feil && <p className="rounded bg-red-50 px-3 py-2 text-sm text-red-700">{feil}</p>}
+        {step === "questions" && (
+          <div className="mx-auto max-w-[var(--container-narrow)] px-4 py-10">
+            <ConditionForm onSubmit={handleSalgsvurdering} />
+          </div>
+        )}
 
-      {vehicle && (
-        <>
-          <VehicleResult vehicle={vehicle} />
-          <ConditionForm onSubmit={handleSalgsvurdering} />
-        </>
-      )}
+        {step === "results" && vehicle && svar && vurdering && (
+          <RecommendationView
+            vehicle={vehicle}
+            input={svar}
+            resultat={vurdering}
+            onVelgKanal={(kanal) => {
+              setValgtKanal(kanal);
+              setStep("channel-detail");
+            }}
+            onRediger={() => setStep("questions")}
+            onRestart={startPaNytt}
+          />
+        )}
 
-      {vurdering && <RecommendationView resultat={vurdering} />}
-    </main>
+        {step === "channel-detail" && valgtKanal && (
+          <div className="mx-auto max-w-[var(--container-narrow)] px-4 py-10">
+            <ChannelDetailView kanal={valgtKanal} onTilbake={() => setStep("results")} />
+          </div>
+        )}
+      </main>
+
+      {step === "landing"}
+    </div>
   );
 }
 

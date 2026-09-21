@@ -5,35 +5,75 @@ import type {
   SalgsvurderingInput,
   Tilstand,
 } from "../../../shared/recommendation/types";
+import { ChoiceCard } from "../design-system/components/forms/ChoiceCard.jsx";
+import { RangeSlider } from "../design-system/components/forms/RangeSlider.jsx";
+import { Input } from "../design-system/components/forms/Input.jsx";
+import { Checkbox } from "../design-system/components/forms/Checkbox.jsx";
+import { Button } from "../design-system/components/core/Button.jsx";
 
 type Props = {
   onSubmit: (input: SalgsvurderingInput) => void;
 };
 
-const TILSTANDER: { verdi: Tilstand; label: string }[] = [
-  { verdi: "meget-god", label: "Meget god" },
-  { verdi: "god", label: "God" },
-  { verdi: "akseptabel", label: "Akseptabel" },
-  { verdi: "darlig", label: "Dårlig" },
-  { verdi: "ikke-kjorbar", label: "Ikke kjørbar" },
+const TILSTANDER: { verdi: Tilstand; label: string; description: string }[] = [
+  { verdi: "meget-god", label: "Meget god", description: "Ingen kjente feil eller skader." },
+  { verdi: "god", label: "God", description: "Normal bruksslitasje, ingen kjente mangler." },
+  { verdi: "akseptabel", label: "Akseptabel", description: "Noe slitasje eller mindre feil." },
+  { verdi: "darlig", label: "Dårlig", description: "Kjente feil som krever reparasjon." },
+  { verdi: "ikke-kjorbar", label: "Ikke kjørbar", description: "Bilen kan ikke kjøres som den er." },
 ];
 
-const HASTVERK: { verdi: Hastverk; label: string }[] = [
-  { verdi: "haster", label: "Haster — vil selge raskest mulig" },
-  { verdi: "normal", label: "Normal — grei tid, ikke i noen hast" },
-  { verdi: "fleksibel", label: "Fleksibel — kan vente på riktig pris" },
+const HASTVERK: { verdi: Hastverk; label: string; description: string }[] = [
+  { verdi: "haster", label: "Haster", description: "Vil selge raskest mulig." },
+  { verdi: "normal", label: "Normal", description: "Grei tid, ikke i noen hast." },
+  { verdi: "fleksibel", label: "Fleksibel", description: "Kan vente på riktig pris." },
 ];
 
-const INNSATS: { verdi: Innsats; label: string }[] = [
-  { verdi: "minimalt", label: "Minimalt — vil ha minst mulig jobb" },
-  { verdi: "noe", label: "Noe — greier annonse og visning" },
-  { verdi: "mye", label: "Mye — vil legge ned jobben for best pris" },
+const INNSATS: { verdi: Innsats; label: string; description: string }[] = [
+  { verdi: "minimalt", label: "Minimalt", description: "Vil ha minst mulig jobb." },
+  { verdi: "noe", label: "Noe", description: "Greier annonse og visning." },
+  { verdi: "mye", label: "Mye", description: "Vil legge ned jobben for best pris." },
 ];
 
 type HeftelserVerdi = "nei" | "ja" | "vet-ikke";
 
+const HEFTELSER: { verdi: HeftelserVerdi; label: string }[] = [
+  { verdi: "nei", label: "Nei" },
+  { verdi: "ja", label: "Ja" },
+  { verdi: "vet-ikke", label: "Vet ikke" },
+];
+
+function ChoiceGroup<T extends string>({
+  legend,
+  options,
+  value,
+  onChange,
+}: {
+  legend: string;
+  options: { verdi: T; label: string; description?: string }[];
+  value: T;
+  onChange: (verdi: T) => void;
+}) {
+  return (
+    <fieldset className="flex flex-col gap-2">
+      <legend className="mb-1 text-body-sm font-medium text-ink">{legend}</legend>
+      <div role="radiogroup" aria-label={legend} className="flex flex-col gap-3">
+        {options.map((o) => (
+          <ChoiceCard
+            key={o.verdi}
+            label={o.label}
+            description={o.description}
+            selected={value === o.verdi}
+            onClick={() => onChange(o.verdi)}
+          />
+        ))}
+      </div>
+    </fieldset>
+  );
+}
+
 export function ConditionForm({ onSubmit }: Props) {
-  const [kilometerstand, setKilometerstand] = useState("");
+  const [kilometerstand, setKilometerstand] = useState(80000);
   const [tilstand, setTilstand] = useState<Tilstand>("god");
   const [hastverk, setHastverk] = useState<Hastverk>("normal");
   const [onsketInnsats, setOnsketInnsats] = useState<Innsats>("noe");
@@ -43,14 +83,12 @@ export function ConditionForm({ onSubmit }: Props) {
 
   function handleSubmit(e: FormEvent) {
     e.preventDefault();
-    const km = Number(kilometerstand);
-    if (!Number.isFinite(km) || km < 0) return;
 
     const verdi = antattVerdi.trim() === "" ? null : Number(antattVerdi);
     if (verdi !== null && (!Number.isFinite(verdi) || verdi < 0)) return;
 
     onSubmit({
-      kilometerstand: km,
+      kilometerstand,
       tilstand,
       hastverk,
       onsketInnsats,
@@ -61,106 +99,60 @@ export function ConditionForm({ onSubmit }: Props) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-3 rounded-lg border border-slate-200 p-4">
-      <h3 className="font-semibold">Km og tilstand</h3>
+    <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+      <RangeSlider
+        id="kilometerstand"
+        label="Kilometerstand"
+        value={kilometerstand}
+        displayValue={`${kilometerstand.toLocaleString("nb-NO")} km`}
+        min={0}
+        max={400000}
+        step={500}
+        scale={["0", "400 000"]}
+        onChange={(e) => setKilometerstand(Number(e.target.value))}
+      />
 
-      <label className="flex flex-col gap-1 text-sm">
-        Kilometerstand
-        <input
-          type="number"
-          min={0}
-          value={kilometerstand}
-          onChange={(e) => setKilometerstand(e.target.value)}
-          className="rounded-md border border-slate-300 px-3 py-2"
-          required
-        />
-      </label>
+      <ChoiceGroup legend="Tilstand" options={TILSTANDER} value={tilstand} onChange={setTilstand} />
+      <ChoiceGroup
+        legend="Hvor fort må bilen vekk?"
+        options={HASTVERK}
+        value={hastverk}
+        onChange={setHastverk}
+      />
+      <ChoiceGroup
+        legend="Hvor mye jobb vil du legge i salget?"
+        options={INNSATS}
+        value={onsketInnsats}
+        onChange={setOnsketInnsats}
+      />
+      <ChoiceGroup
+        legend="Pant eller gjeld registrert på bilen?"
+        options={HEFTELSER}
+        value={heftelser}
+        onChange={setHeftelser}
+      />
 
-      <label className="flex flex-col gap-1 text-sm">
-        Tilstand
-        <select
-          value={tilstand}
-          onChange={(e) => setTilstand(e.target.value as Tilstand)}
-          className="rounded-md border border-slate-300 px-3 py-2"
-        >
-          {TILSTANDER.map((t) => (
-            <option key={t.verdi} value={t.verdi}>
-              {t.label}
-            </option>
-          ))}
-        </select>
-      </label>
+      <Input
+        id="antatt-verdi"
+        label="Ditt eget verdianslag"
+        data
+        optional
+        suffix="kr"
+        placeholder="150 000"
+        value={antattVerdi}
+        onChange={(e) => setAntattVerdi(e.target.value)}
+        hint="Brukes kun som et signal, ikke som fasit."
+      />
 
-      <label className="flex flex-col gap-1 text-sm">
-        Hvor mye haster salget?
-        <select
-          value={hastverk}
-          onChange={(e) => setHastverk(e.target.value as Hastverk)}
-          className="rounded-md border border-slate-300 px-3 py-2"
-        >
-          {HASTVERK.map((h) => (
-            <option key={h.verdi} value={h.verdi}>
-              {h.label}
-            </option>
-          ))}
-        </select>
-      </label>
+      <Checkbox
+        label="Jeg skal uansett kjøpe ny bil hos forhandler"
+        checked={planleggerNybilkjop}
+        onChange={(e) => setPlanleggerNybilkjop(e.target.checked)}
+      />
 
-      <label className="flex flex-col gap-1 text-sm">
-        Hvor mye jobb vil du legge inn selv?
-        <select
-          value={onsketInnsats}
-          onChange={(e) => setOnsketInnsats(e.target.value as Innsats)}
-          className="rounded-md border border-slate-300 px-3 py-2"
-        >
-          {INNSATS.map((i) => (
-            <option key={i.verdi} value={i.verdi}>
-              {i.label}
-            </option>
-          ))}
-        </select>
-      </label>
-
-      <label className="flex flex-col gap-1 text-sm">
-        Er det pant eller gjeld registrert på bilen?
-        <select
-          value={heftelser}
-          onChange={(e) => setHeftelser(e.target.value as HeftelserVerdi)}
-          className="rounded-md border border-slate-300 px-3 py-2"
-        >
-          <option value="vet-ikke">Vet ikke</option>
-          <option value="nei">Nei</option>
-          <option value="ja">Ja</option>
-        </select>
-      </label>
-
-      <label className="flex flex-col gap-1 text-sm">
-        Ditt eget verdianslag i kroner (valgfritt)
-        <input
-          type="number"
-          min={0}
-          value={antattVerdi}
-          onChange={(e) => setAntattVerdi(e.target.value)}
-          className="rounded-md border border-slate-300 px-3 py-2"
-          placeholder="F.eks. 150000"
-        />
-      </label>
-
-      <label className="flex items-center gap-2 text-sm">
-        <input
-          type="checkbox"
-          checked={planleggerNybilkjop}
-          onChange={(e) => setPlanleggerNybilkjop(e.target.checked)}
-        />
-        Jeg skal uansett kjøpe ny bil hos forhandler
-      </label>
-
-      <button
-        type="submit"
-        className="mt-2 rounded-md bg-slate-900 px-4 py-2 font-medium text-white"
-      >
+      <Button type="submit" size="lg">
         Få anbefaling
-      </button>
+      </Button>
     </form>
   );
 }

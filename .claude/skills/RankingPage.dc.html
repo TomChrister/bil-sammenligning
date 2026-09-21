@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<!-- @template name="Rangeringsside" description="Ranked sales-channel result page: plate header, six channel cards with reasons and providers, standing disclosures." -->
+<helmet><script src="./ds-base.js"></script><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin=""></helmet>
+<div style="min-height:100vh;background:var(--surface-page);font:var(--type-body);color:var(--text-primary)">
+<header style="position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:32px;height:68px;padding:0 32px;background:#ffffffe6;backdrop-filter:saturate(140%) blur(14px);border-bottom:1px solid var(--border-subtle)">
+<span style="font-family:var(--font-display);font-weight:700;font-variation-settings:'wdth' 112;letter-spacing:-0.022em;font-size:20px">Bilsalg-anbefaler</span>
+<nav style="display:flex;gap:24px;margin-right:auto;font:var(--type-body-sm)"><a href="#" style="color:var(--text-secondary);text-decoration:none">Slik virker det</a><a href="#" style="color:var(--text-secondary);text-decoration:none">Salgskanaler</a><a href="#" style="color:var(--text-secondary);text-decoration:none">Om dataene</a></nav>
+<x-import component-from-global-scope="BilsalgAnbefalerDesignSystem_c9d8ad.Button" variant="ghost" icon="rotate-ccw" hint-size="160px,44px">Start på nytt</x-import>
+</header>
+<main style="max-width:1180px;margin:0 auto;padding:40px 32px 96px">
+<div style="display:flex;align-items:flex-end;justify-content:space-between;gap:32px;margin-bottom:24px">
+<div>
+<div style="font:var(--type-eyebrow);letter-spacing:var(--tracking-eyebrow);text-transform:uppercase;color:var(--text-muted)">Rangering for din bil</div>
+<h1 style="font:var(--type-h1);font-variation-settings:'wdth' 112;letter-spacing:-0.022em;margin:12px 0 8px">Forhandlerauksjon passer best</h1>
+<p style="font:var(--type-body-lg);color:var(--text-secondary);max-width:62ch">Rangeringen bygger på de tekniske dataene fra Statens vegvesen og de fire svarene dine. Du får ingen prisvurdering — bare rekkefølgen, og hvorfor.</p>
+</div>
+<div style="display:flex;align-items:center;gap:12px">
+<div style="text-align:right"><div style="font:var(--type-h4)">Volkswagen Golf 1.6 TDI</div><div style="font:var(--type-caption);color:var(--text-muted)">Highline · 5-dørs · 148 500 km</div></div>
+<x-import component-from-global-scope="BilsalgAnbefalerDesignSystem_c9d8ad.PlateInput" value="EK 84213" read-only="true" hint-size="210px,48px"></x-import>
+</div>
+</div>
+<div style="display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:32px;align-items:start">
+<div style="display:flex;flex-direction:column;gap:16px">
+<article class="bs-channel bs-channel--top">
+<header class="bs-channel__head">
+<span class="bs-rank bs-rank--1">1</span>
+<div class="bs-channel__titles">
+<h3 class="bs-channel__name">Forhandlerauksjon</h3>
+<p class="bs-channel__lede">Bilen legges ut for forhandlere som byr mot hverandre i en tidsbegrenset auksjon.</p>
+</div>
+<span class="bs-badge bs-badge--accent">Anbefalt</span>
+</header>
+<div class="bs-channel__meta">
+<span class="bs-channel__metaitem">Oppgjør: 2–5 dager</span>
+<span class="bs-channel__metaitem">Lav egeninnsats</span>
+<span class="bs-channel__metaitem">Nasjonalt marked</span>
+</div>
+<ul class="bs-reasons">
+<li class="bs-reason bs-reason--pro">Bilen er 6 år og har 148 500 km — forhandlere byr aktivt i dette segmentet.</li>
+<li class="bs-reason bs-reason--pro">Du svarte at bilen må vekk innen noen dager, og oppgjøret kommer raskt.</li>
+<li class="bs-reason bs-reason--con">Du får trolig mindre enn ved privatsalg, men er ferdig på under en uke.</li>
+</ul>
+<div style="display:flex;flex-direction:column;gap:8px">
+<a class="bs-provider" href="#" style="text-decoration:none;color:inherit"><span class="bs-provider__mark">NE</span><span><span class="bs-provider__name">Nettbil</span><span class="bs-provider__note">Auksjon blant forhandlere · gratis henting</span></span></a>
+<a class="bs-provider" href="#" style="text-decoration:none;color:inherit"><span class="bs-provider__mark">RE</span><span><span class="bs-provider__name">Rebil</span><span class="bs-provider__note">Digital auksjon · oppgjør etter innhenting</span></span></a>
+</div>
+<div class="bs-channel__foot"><span style="font:var(--type-caption);color:var(--text-muted)">3 tilbydere</span><x-import component-from-global-scope="BilsalgAnbefalerDesignSystem_c9d8ad.Button" variant="secondary" icon-after="chevron-right" hint-size="150px,44px">Se kanalen</x-import></div>
+</article>
+<article class="bs-channel">
+<header class="bs-channel__head">
+<span class="bs-rank bs-rank--2">2</span>
+<div class="bs-channel__titles">
+<h3 class="bs-channel__name">Fastpris-innløsning</h3>
+<p class="bs-channel__lede">En aktør kjøper bilen direkte til en fast pris, uten budrunde.</p>
+</div>
+</header>
+<div class="bs-channel__meta"><span class="bs-channel__metaitem">Oppgjør: 1–2 dager</span><span class="bs-channel__metaitem">Ingen egeninnsats</span></div>
+<ul class="bs-reasons"><li class="bs-reason bs-reason--pro">Raskeste vei ut av bilen når den må vekk innen noen dager.</li><li class="bs-reason bs-reason--con">Bare én kjøper vurderer bilen, så du mister konkurransen mellom budgivere.</li></ul>
+<div class="bs-channel__foot"><span style="font:var(--type-caption);color:var(--text-muted)">2 tilbydere</span><x-import component-from-global-scope="BilsalgAnbefalerDesignSystem_c9d8ad.Button" variant="secondary" icon-after="chevron-right" hint-size="150px,44px">Se kanalen</x-import></div>
+</article>
+<article class="bs-channel">
+<header class="bs-channel__head">
+<span class="bs-rank bs-rank--3">3</span>
+<div class="bs-channel__titles">
+<h3 class="bs-channel__name">Innbytte</h3>
+<p class="bs-channel__lede">Bilen går i bytte mot en ny bil hos forhandler.</p>
+</div>
+</header>
+<div class="bs-channel__meta"><span class="bs-channel__metaitem">Oppgjør: ved levering</span><span class="bs-channel__metaitem">Lav egeninnsats</span></div>
+<ul class="bs-reasons"><li class="bs-reason bs-reason--con">Forutsetter at du faktisk skal kjøpe bil nå — det sa du ikke noe om.</li></ul>
+<div class="bs-channel__foot"><span style="font:var(--type-caption);color:var(--text-muted)">2 tilbydere</span><x-import component-from-global-scope="BilsalgAnbefalerDesignSystem_c9d8ad.Button" variant="secondary" icon-after="chevron-right" hint-size="150px,44px">Se kanalen</x-import></div>
+</article>
+<article class="bs-channel">
+<header class="bs-channel__head">
+<span class="bs-rank bs-rank--rest">4</span>
+<div class="bs-channel__titles"><h3 class="bs-channel__name">Privatsalg</h3></div>
+</header>
+<ul class="bs-reasons"><li class="bs-reason bs-reason--con">Gir vanligvis mest igjen, men du svarte at bilen må vekk raskt og at du vil legge minst mulig jobb i salget.</li></ul>
+</article>
+<article class="bs-channel">
+<header class="bs-channel__head">
+<span class="bs-rank bs-rank--rest">5</span>
+<div class="bs-channel__titles"><h3 class="bs-channel__name">Kommisjonssalg</h3></div>
+</header>
+<ul class="bs-reasons"><li class="bs-reason bs-reason--con">Bilen kan stå lenge før den blir solgt, og provisjonen trekkes fra oppgjøret.</li></ul>
+</article>
+<article class="bs-channel">
+<header class="bs-channel__head">
+<span class="bs-rank bs-rank--rest">6</span>
+<div class="bs-channel__titles"><h3 class="bs-channel__name">Auksjonshus</h3></div>
+</header>
+<ul class="bs-reasons"><li class="bs-reason bs-reason--con">Passer best for veteranbiler og nisjemodeller — en Golf fra 2019 treffer sjelden kjøpergruppen.</li></ul>
+</article>
+<x-import component-from-global-scope="BilsalgAnbefalerDesignSystem_c9d8ad.DisclosureNote" variant="both" boxed="true" hint-size="100%,48px"></x-import>
+</div>
+<aside style="position:sticky;top:96px;display:flex;flex-direction:column;gap:16px">
+<div class="bs-card bs-card--pad-md">
+<div style="font:var(--type-eyebrow);letter-spacing:var(--tracking-eyebrow);text-transform:uppercase;color:var(--text-muted);margin-bottom:12px">Svarene dine</div>
+<div style="display:flex;flex-direction:column;gap:12px">
+<div><div style="font:var(--type-eyebrow);letter-spacing:var(--tracking-eyebrow);text-transform:uppercase;color:var(--text-muted)">Tilstand</div><div style="font:var(--type-body-sm);margin-top:2px">Normal bruksslitasje</div></div>
+<div><div style="font:var(--type-eyebrow);letter-spacing:var(--tracking-eyebrow);text-transform:uppercase;color:var(--text-muted)">Kilometerstand</div><div style="font:var(--type-data);font-size:14px;margin-top:2px">148 500 km</div></div>
+<div><div style="font:var(--type-eyebrow);letter-spacing:var(--tracking-eyebrow);text-transform:uppercase;color:var(--text-muted)">Hastverk</div><div style="font:var(--type-body-sm);margin-top:2px">Innen noen dager</div></div>
+<div><div style="font:var(--type-eyebrow);letter-spacing:var(--tracking-eyebrow);text-transform:uppercase;color:var(--text-muted)">Egeninnsats</div><div style="font:var(--type-body-sm);margin-top:2px">Minst mulig</div></div>
+</div>
+<hr class="bs-divider" style="margin:16px 0">
+<p style="font:var(--type-caption);color:var(--text-muted)">Endrer du ett svar, endres rekkefølgen. Hastverk vekter mest.</p>
+</div>
+<x-import component-from-global-scope="BilsalgAnbefalerDesignSystem_c9d8ad.DisclosureNote" variant="source" hint-size="100%,32px"></x-import>
+</aside>
+</div>
+</main>
+</div>
+</x-dc>
+</body>
+</html>

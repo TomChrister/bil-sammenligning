@@ -1,51 +1,44 @@
 import type { Vehicle } from "../../../shared/vehicle";
+import { Card } from "../design-system/components/core/Card.jsx";
+import { Callout } from "../design-system/components/core/Callout.jsx";
+import { SpecGrid } from "../design-system/components/product/SpecGrid.jsx";
+import { DisclosureNote } from "../design-system/components/product/DisclosureNote.jsx";
 
 type Props = {
   vehicle: Vehicle;
 };
 
-function felt(label: string, verdi: string | number | null) {
-  return (
-    <div className="flex justify-between border-b border-slate-100 py-1 text-sm">
-      <span className="text-slate-500">{label}</span>
-      <span className="font-medium text-slate-900">{verdi ?? "—"}</span>
-    </div>
-  );
-}
-
 export function VehicleResult({ vehicle }: Props) {
+  const specs = [
+    { label: "Kjennemerke", value: vehicle.kjennemerke },
+    { label: "Førstegangsregistrert", value: vehicle.forstegangsregistrert ?? "—" },
+    { label: "Drivstoff", value: vehicle.drivstoff ?? "—" },
+    { label: "Effekt", value: vehicle.effektKw ? `${Math.round(vehicle.effektKw)} kW` : "—" },
+    { label: "Girkasse", value: vehicle.girkasse ?? "—" },
+    { label: "Karosseri", value: vehicle.karosseri ?? "—" },
+    { label: "Antall seter", value: vehicle.antallSeter ?? "—" },
+    { label: "Egenvekt", value: vehicle.egenvektKg ? `${vehicle.egenvektKg} kg` : "—" },
+    { label: "Totalvekt", value: vehicle.totalvektKg ? `${vehicle.totalvektKg} kg` : "—" },
+    { label: "CO2-utslipp", value: vehicle.co2GPrKm ? `${vehicle.co2GPrKm} g/km` : "—" },
+    { label: "Euroklasse", value: vehicle.euroklasse ?? "—" },
+    { label: "Rekkevidde", value: vehicle.rekkeviddeKm ? `${vehicle.rekkeviddeKm} km` : "—" },
+    { label: "Registreringsstatus", value: vehicle.registreringsstatus ?? "—" },
+    { label: "EU-kontrollfrist", value: vehicle.euKontrollfrist ?? "—" },
+    { label: "Sist godkjent EU-kontroll", value: vehicle.euKontrollSistGodkjent ?? "—" },
+  ];
+
   return (
-    <div className="rounded-lg border border-slate-200 p-4">
-      <h2 className="mb-2 text-lg font-semibold">
-        {vehicle.merke} {vehicle.modell} {vehicle.variant}
-      </h2>
+    <Card pad="lg" className="flex flex-col gap-4">
+      <div className="flex flex-col gap-2">
+        <h2 className="text-h3 font-core font-semibold text-ink">
+          {vehicle.merke} {vehicle.modell} {vehicle.variant}
+        </h2>
+        {vehicle.avregistrert && <Callout tone="warning">Kjøretøyet er avregistrert.</Callout>}
+      </div>
 
-      {vehicle.avregistrert && (
-        <p className="mb-2 rounded bg-amber-50 px-2 py-1 text-sm text-amber-800">
-          Kjøretøyet er avregistrert.
-        </p>
-      )}
+      <SpecGrid columns={2} items={specs} />
 
-      {felt("Kjennemerke", vehicle.kjennemerke)}
-      {felt("Førstegangsregistrert", vehicle.forstegangsregistrert)}
-      {felt("Drivstoff", vehicle.drivstoff)}
-      {felt("Effekt", vehicle.effektKw ? `${Math.round(vehicle.effektKw)} kW` : null)}
-      {felt("Girkasse", vehicle.girkasse)}
-      {felt("Karosseri", vehicle.karosseri)}
-      {felt("Antall seter", vehicle.antallSeter)}
-      {felt("Egenvekt", vehicle.egenvektKg ? `${vehicle.egenvektKg} kg` : null)}
-      {felt("Totalvekt", vehicle.totalvektKg ? `${vehicle.totalvektKg} kg` : null)}
-      {felt("CO2-utslipp", vehicle.co2GPrKm ? `${vehicle.co2GPrKm} g/km` : null)}
-      {felt("Euroklasse", vehicle.euroklasse)}
-      {felt("Rekkevidde", vehicle.rekkeviddeKm ? `${vehicle.rekkeviddeKm} km` : null)}
-      {felt("Registreringsstatus", vehicle.registreringsstatus)}
-      {felt("EU-kontrollfrist", vehicle.euKontrollfrist)}
-      {felt("Sist godkjent EU-kontroll", vehicle.euKontrollSistGodkjent)}
-
-      <p className="mt-4 text-xs text-slate-400">
-        Tekniske kjøretøydata fra Statens vegvesen (Autosys), lisensiert under CC BY 4.0. Denne
-        tjenesten er ikke offisiell eller godkjent av Statens vegvesen.
-      </p>
-    </div>
+      <DisclosureNote variant="source" />
+    </Card>
   );
 }

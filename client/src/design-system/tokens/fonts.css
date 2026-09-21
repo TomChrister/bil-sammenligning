@@ -1,0 +1,16 @@
+/* Webfonts — served from Google Fonts.
+   No original font binaries were supplied with this brief, so the families below are
+   Google Fonts stand-ins chosen for an automotive-technical feel. See readme.md
+   "Font substitution" if licensed brand fonts exist and should replace them. */
+@import url("https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,75..125,300..800;1,75..125,300..800&family=IBM+Plex+Mono:wght@400;500;600&display=swap");
+
+:root {
+  --font-core: "Archivo", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-display: "Archivo", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  /* Width axis presets (Archivo is variable on wdth) */
+  --width-display: 112; /* @kind other */   /* headlines: slightly extended */
+  --width-normal: 100; /* @kind other */
+  --width-condensed: 88; /* @kind other */  /* dense data labels, table heads */
+}
