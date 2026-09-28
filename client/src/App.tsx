@@ -60,13 +60,14 @@ function App() {
     setFeil(null);
   }
 
+  function fokuserSkiltInput() {
+    document.getElementById("skilt-oppslag")?.scrollIntoView({ behavior: "smooth", block: "center" });
+    document.getElementById("skilt-input")?.focus({ preventScroll: true });
+  }
+
   return (
     <div className="k-shell">
-      <TopBar
-        onHome={startPaNytt}
-        onStart={() => document.getElementById("skilt-oppslag")?.scrollIntoView({ behavior: "smooth", block: "center" })}
-        compact={step !== "landing"}
-      />
+      <TopBar onHome={startPaNytt} onStart={fokuserSkiltInput} compact={step !== "landing"} />
 
       <main className="k-main">
         {step === "landing" && (
