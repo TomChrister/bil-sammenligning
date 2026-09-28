@@ -1,8 +1,5 @@
 :root {
   /* Sizes — px, no fluid clamp at token level (surfaces opt in) */
-  --text-display-xl: 64px;
-  --text-display-l: 48px;
-  --text-display-m: 38px;
   --text-h1: 32px;
   --text-h2: 26px;
   --text-h3: 21px;
@@ -14,19 +11,15 @@
   --text-micro: 11px;
 
   /* Line heights */
-  --leading-display: 1.02;
   --leading-tight: 1.14;
   --leading-heading: 1.22;
   --leading-body: 1.55;
-  --leading-relaxed: 1.7;
 
   /* Weights */
-  --weight-light: 300;
   --weight-regular: 400;
   --weight-medium: 500;
   --weight-semibold: 600;
   --weight-bold: 700;
-  --weight-black: 800;
 
   /* Tracking */
   --tracking-display: -0.022em;
@@ -36,9 +29,6 @@
   --tracking-eyebrow: 0.09em;
 
   /* Ready-made type roles (shorthand: weight size/leading family) */
-  --type-display-xl: var(--weight-bold) var(--text-display-xl) / var(--leading-display) var(--font-display);
-  --type-display-l: var(--weight-bold) var(--text-display-l) / var(--leading-display) var(--font-display);
-  --type-display-m: var(--weight-bold) var(--text-display-m) / var(--leading-tight) var(--font-display);
   --type-h1: var(--weight-bold) var(--text-h1) / var(--leading-tight) var(--font-display);
   --type-h2: var(--weight-semibold) var(--text-h2) / var(--leading-heading) var(--font-display);
   --type-h3: var(--weight-semibold) var(--text-h3) / var(--leading-heading) var(--font-core);

@@ -68,6 +68,8 @@
   display: flex;
   align-items: center;
   gap: var(--space-2);
+  margin-bottom: var(--space-3);
+  font-size: 12px;
 }
 .k-h1 {
   font-family: var(--font-display);
@@ -93,6 +95,7 @@
 .k-section {
   padding: var(--space-16) 0;
   border-top: 1px solid var(--border-subtle);
+  scroll-margin-top: 68px;
 }
 .k-section--dark {
   background: var(--surface-inverse);

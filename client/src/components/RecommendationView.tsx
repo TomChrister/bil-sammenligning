@@ -254,7 +254,7 @@ export function RecommendationView({
         onClose={() => setForklaringApen(false)}
         footer={<Button onClick={() => setForklaringApen(false)}>Greit</Button>}
       >
-        <HowItWorks />
+        <HowItWorks vinner={vinner} />
       </Dialog>
     </div>
   );

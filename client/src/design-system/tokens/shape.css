@@ -5,7 +5,6 @@
   --radius-md: 10px;
   --radius-lg: 14px;
   --radius-xl: 20px;
-  --radius-2xl: 28px;
   --radius-pill: 999px;
 
   /* Borders */
@@ -18,7 +17,6 @@
   --shadow-sm: 0 1px 2px #0d11160f, 0 2px 6px #0d11160d;
   --shadow-md: 0 2px 4px #0d11160d, 0 10px 24px -6px #0d11161a;
   --shadow-lg: 0 8px 12px -6px #0d111614, 0 28px 56px -16px #0d111633;
-  --shadow-inset-hairline: inset 0 -1px 0 #0d111614;
 
   /* Blur — only for sticky chrome over content */
   --blur-chrome: saturate(140%) blur(14px); /* @kind other */
