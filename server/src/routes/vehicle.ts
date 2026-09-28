@@ -35,7 +35,7 @@ vehicleRouter.post("/vehicle", async (req, res) => {
     if (raw.feilmelding || !raw.kjoretoydataListe?.length) {
       const response: VehicleLookupResponse = {
         ok: false,
-        error: raw.feilmelding ?? "Fant ikke kjøretøy på dette kjennemerket",
+        error: raw.feilmelding ?? "Fant ikke kjøretøy på dette skiltnummeret",
       };
       res.status(404).json(response);
       return;

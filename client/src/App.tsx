@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { slaOppKjoretoy } from "./api/vehicleClient";
 import {
   beregnSalgsvurdering,
@@ -25,6 +25,10 @@ function App() {
   const [valgtKanal, setValgtKanal] = useState<KanalResultatMedLeverandorer | null>(null);
   const [loading, setLoading] = useState(false);
   const [feil, setFeil] = useState<string | null>(null);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [step]);
 
   async function handleOppslag(kjennemerke: string) {
     if (kjennemerke.trim().length === 0) return;

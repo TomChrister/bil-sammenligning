@@ -77,7 +77,12 @@ export function RecommendationView({
   return (
     <div className="k-flow">
       <div className="k-flowhead">
-        <StepProgress steps={FLOW_STEPS} current={3} />
+        <div className="hidden sm:block">
+          <StepProgress steps={FLOW_STEPS} current={3} />
+        </div>
+        <div className="flex-1 sm:hidden">
+          <StepProgress steps={FLOW_STEPS} current={3} variant="bar" />
+        </div>
         <div className="flex gap-2">
           <Button variant="secondary" icon="rotate-ccw" onClick={onRestart}>
             Start på nytt
@@ -99,9 +104,13 @@ export function RecommendationView({
             </button>
             .
           </p>
+          <a href="#svarene-dine" className="k-svarlink mt-3 underline [font:var(--type-body-sm)]">
+            <Icon name="list-checks" size={14} />
+            Se svarene dine
+          </a>
         </div>
-        <div className="flex items-center gap-3">
-          <div className="text-right">
+        <div className="flex flex-col items-start gap-3 sm:flex-row sm:items-center">
+          <div className="text-left sm:text-right">
             <div className="[font:var(--type-h4)]">{bilNavn}</div>
             {vehicle.variant && <div className="[font:var(--type-caption)] text-ink-muted">{vehicle.variant}</div>}
           </div>
@@ -190,7 +199,7 @@ export function RecommendationView({
           <DisclosureNote variant="both" boxed />
         </div>
 
-        <aside className="k-aside">
+        <aside className="k-aside" id="svarene-dine">
           <Card pad="md">
             <div className="mb-3 flex items-center justify-between">
               <span className="k-eyebrow">Svarene dine</span>
