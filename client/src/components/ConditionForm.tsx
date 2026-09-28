@@ -43,6 +43,11 @@ const HEFTELSER: { verdi: HeftelserVerdi; label: string }[] = [
   { verdi: "vet-ikke", label: "Vet ikke" },
 ];
 
+function formatVerdi(raw: string) {
+  const siffer = raw.replace(/\D/g, "");
+  return siffer.replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+}
+
 function ChoiceGroup<T extends string>({
   legend,
   options,
@@ -84,7 +89,8 @@ export function ConditionForm({ onSubmit }: Props) {
   function handleSubmit(e: FormEvent) {
     e.preventDefault();
 
-    const verdi = antattVerdi.trim() === "" ? null : Number(antattVerdi);
+    const sifferVerdi = antattVerdi.replace(/\s/g, "");
+    const verdi = sifferVerdi === "" ? null : Number(sifferVerdi);
     if (verdi !== null && (!Number.isFinite(verdi) || verdi < 0)) return;
 
     onSubmit({
@@ -139,8 +145,9 @@ export function ConditionForm({ onSubmit }: Props) {
         optional
         suffix="kr"
         placeholder="150 000"
+        inputMode="numeric"
         value={antattVerdi}
-        onChange={(e) => setAntattVerdi(e.target.value)}
+        onChange={(e) => setAntattVerdi(formatVerdi(e.target.value))}
         hint="Brukes kun som et signal, ikke som fasit."
       />
 

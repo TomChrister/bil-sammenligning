@@ -66,7 +66,7 @@ function SectionHead({ eyebrow, title, action }: { eyebrow: string; title: strin
 function HeroPreview() {
     return (
         <Card pad="md" className="shadow-[var(--shadow-md)]">
-            <div className="mb-4 flex items-center justify-between">
+            <div className="mb-4 flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-0">
                 <div>
                     <div className="k-eyebrow">Eksempel på resultat</div>
                     <div className="mt-1 [font:var(--type-h4)]">Volkswagen Golf 1.6 TDI</div>

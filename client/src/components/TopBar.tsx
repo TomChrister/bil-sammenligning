@@ -34,11 +34,7 @@ export function TopBar({ onHome, onStart, compact = false }: Props) {
           ))}
         </nav>
       )}
-      {compact ? (
-        <Button variant="ghost" icon="rotate-ccw" onClick={onHome}>
-          Start på nytt
-        </Button>
-      ) : (
+      {!compact && (
         <Button variant="secondary" icon="search" onClick={onStart}>
           Slå opp skilt
         </Button>
