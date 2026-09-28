@@ -18,7 +18,7 @@ export function RegnrForm({ onSubmit, loading }: Props) {
 
   return (
     <form onSubmit={handleSubmit} className="k-lookup">
-      <PlateInput size="lg" value={kjennemerke} onChange={setKjennemerke} />
+      <PlateInput id="skilt-input" size="lg" value={kjennemerke} onChange={setKjennemerke} />
       <Button type="submit" size="lg" icon="search" disabled={loading}>
         {loading ? "Henter..." : "Slå opp skilt"}
       </Button>

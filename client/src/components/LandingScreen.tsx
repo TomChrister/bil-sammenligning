@@ -94,6 +94,7 @@ function HeroPreview() {
 
 function scrollTilOppslag() {
     document.getElementById("skilt-oppslag")?.scrollIntoView({ behavior: "smooth", block: "center" });
+    document.getElementById("skilt-input")?.focus({ preventScroll: true });
 }
 
 export function LandingScreen({ onSubmit, loading, feil }: Props) {
@@ -187,9 +188,6 @@ export function LandingScreen({ onSubmit, loading, feil }: Props) {
                         <div className="mt-8 flex gap-3">
                             <Button variant="accent" iconAfter="arrow-right" onClick={scrollTilOppslag}>
                                 Slå opp bilen din
-                            </Button>
-                            <Button variant="ghost" style={{ color: "var(--text-inverse-secondary)" }}>
-                                Les om metoden
                             </Button>
                         </div>
                     </div>
