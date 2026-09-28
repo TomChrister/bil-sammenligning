@@ -11,24 +11,18 @@
   --asphalt-600: #4c5462;
   --asphalt-700: #363d48;
   --asphalt-800: #232932;
-  --asphalt-900: #161b22;
   --asphalt-950: #0d1116;
 
   /* ---------- Kobolt: primary. Trust, links, primary actions ---------- */
   --kobolt-50: #eef1fe;
-  --kobolt-100: #dce2fd;
   --kobolt-200: #b9c6fb;
-  --kobolt-300: #8da0f7;
   --kobolt-400: #5d74f0;
   --kobolt-500: #2f4be6;
   --kobolt-600: #1f37cc;
   --kobolt-700: #182ba3;
   --kobolt-800: #152478;
-  --kobolt-900: #121d57;
 
   /* ---------- Sitron: acid accent. Rank 1, highlights, on-dark CTAs ---------- */
-  --sitron-100: #f3ffcf;
-  --sitron-200: #e7ff9f;
   --sitron-300: #d8fb63;
   --sitron-400: #c8f03a;
   --sitron-500: #afd91f;
@@ -37,7 +31,6 @@
   /* ---------- Semantic hues ---------- */
   --gronn-100: #e4f5ee;
   --gronn-500: #12906a;
-  --gronn-600: #0f7a57;
   --gronn-700: #0b5c42;
 
   --amber-100: #fdf1df;
@@ -69,16 +62,13 @@
   /* Surfaces */
   --surface-page: var(--asphalt-25);
   --surface-card: var(--asphalt-0);
-  --surface-raised: var(--asphalt-0);
   --surface-sunken: var(--asphalt-50);
   --surface-muted: var(--asphalt-100);
   --surface-inverse: var(--asphalt-950);
-  --surface-inverse-raised: var(--asphalt-900);
   --surface-primary: var(--kobolt-500);
   --surface-primary-hover: var(--kobolt-600);
   --surface-primary-quiet: var(--kobolt-50);
   --surface-accent: var(--sitron-400);
-  --surface-accent-quiet: var(--sitron-100);
   --surface-success-quiet: var(--gronn-100);
   --surface-warning-quiet: var(--amber-100);
   --surface-danger-quiet: var(--rust-100);
@@ -106,5 +96,4 @@
   /* Effects */
   --overlay-scrim: #0d1116b8;
   --focus-ring: 0 0 0 3px #2f4be647;
-  --focus-ring-inverse: 0 0 0 3px #c8f03a5c;
 }

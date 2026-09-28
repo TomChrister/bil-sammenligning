@@ -6,6 +6,12 @@ type Props = {
   compact?: boolean;
 };
 
+const NAV_ITEMS = [
+  { id: "slik-virker-det", label: "Slik virker det" },
+  { id: "salgskanaler", label: "Salgskanaler" },
+  { id: "om-dataene", label: "Om dataene" },
+] as const;
+
 export function TopBar({ onHome, onStart, compact = false }: Props) {
   return (
     <header className="k-bar">
@@ -19,11 +25,15 @@ export function TopBar({ onHome, onStart, compact = false }: Props) {
       >
         Bilsalg-anbefaler
       </a>
-      <nav className="k-nav">
-        <a href="#">Slik virker det</a>
-        <a href="#">Salgskanaler</a>
-        <a href="#">Om dataene</a>
-      </nav>
+      {!compact && (
+        <nav className="k-nav">
+          {NAV_ITEMS.map((item) => (
+            <a key={item.id} href={`#${item.id}`}>
+              {item.label}
+            </a>
+          ))}
+        </nav>
+      )}
       {compact ? (
         <Button variant="ghost" icon="rotate-ccw" onClick={onHome}>
           Start på nytt

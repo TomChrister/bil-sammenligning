@@ -1,7 +1,5 @@
 :root {
-  /* 4px base grid. Two sub-grid steps (2, 6) exist for control internals only. */
-  --space-2xs: 2px;
-  --space-xs: 4px;
+  /* 4px base grid. Sub-grid step (6) exists for control internals only. */
   --space-1: 6px;
   --space-2: 8px;
   --space-3: 12px;
@@ -13,20 +11,13 @@
   --space-12: 48px;
   --space-16: 64px;
   --space-20: 80px;
-  --space-24: 96px;
-  --space-32: 128px;
 
   /* Layout */
   --container-max: 1180px;
   --container-narrow: 720px;
-  --container-wide: 1440px;
-  --gutter: var(--space-6);
-  --section-y: var(--space-20);
-  --section-y-compact: var(--space-12);
 
   /* Control heights — 44px is the minimum touch target */
   --control-sm: 36px;
   --control-md: 44px;
   --control-lg: 52px;
-  --control-xl: 60px;
 }
