@@ -1,6 +1,6 @@
 {
-  "name": "Bilsalg-anbefaler",
-  "short_name": "Bilsalg",
+  "name": "Bilmatch",
+  "short_name": "Bilmatch",
   "icons": [
     {
       "src": "/web-app-manifest-192x192.png",

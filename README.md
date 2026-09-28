@@ -1,4 +1,4 @@
-# Bilsalg-anbefaler
+# Bilmatch
 
 Hobbyprosjekt: slå opp et norsk registreringsnummer, se tekniske data fra Statens
 vegvesen (Autosys), oppgi kilometerstand, tilstand og noen få spørsmål om
