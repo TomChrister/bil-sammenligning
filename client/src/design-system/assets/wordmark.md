@@ -7,7 +7,7 @@ Wherever a mark would go, set the name as type:
 
 - Family: Archivo, weight 700, width axis `112` (`--width-display`)
 - Tracking: `-0.022em` (`--tracking-display`)
-- Casing: `Bilsalg-anbefaler` — sentence case, hyphen always kept, never `BilSalg` or `Bilsalganbefaler`
+- Casing: `Bilmatch` — sentence case, single word, never `BilMatch` or `bilMatch`
 - Colour: `--text-primary` on light, `--text-inverse` on dark
 - Optional on dark: the hyphen may carry `--sitron-400`; nothing else in the wordmark is coloured
 - Minimum size: 16 px; clear space: 0.75 × cap height on all sides

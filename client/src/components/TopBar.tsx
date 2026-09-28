@@ -23,7 +23,7 @@ export function TopBar({ onHome, onStart, compact = false }: Props) {
           onHome();
         }}
       >
-        Bilsalg-anbefaler
+        Bilmatch
       </a>
       {!compact && (
         <nav className="k-nav">
