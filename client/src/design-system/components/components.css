@@ -162,14 +162,6 @@
 .bs-dialog__foot{display:flex;justify-content:flex-end;gap:var(--space-2);padding:var(--space-4) var(--space-6);background:var(--surface-sunken);border-top:var(--border-width) solid var(--border-subtle)}
 @keyframes bs-rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 
-.bs-toast{display:flex;align-items:flex-start;gap:var(--space-3);min-width:300px;max-width:420px;padding:var(--space-4);border-radius:var(--radius-md);background:var(--surface-inverse);color:var(--text-inverse);box-shadow:var(--shadow-lg);font:var(--type-body-sm);animation:bs-rise var(--dur-base) var(--ease-entrance)}
-.bs-toast__title{font:var(--type-label);color:var(--text-inverse)}
-.bs-toast__text{color:var(--text-inverse-secondary)}
-.bs-toast--success .bs-toast__icon{color:var(--sitron-300)}
-.bs-toast--danger .bs-toast__icon{color:var(--rust-500)}
-.bs-toast__close{margin-left:auto;border:0;background:none;color:var(--text-inverse-secondary);padding:0}
-.bs-toast__close:hover{color:var(--text-inverse)}
-
 /* ---------------- product ---------------- */
 .bs-rank{display:grid;place-items:center;flex:none;width:36px;height:36px;border-radius:var(--radius-pill);font:var(--type-h4);font-variant-numeric:tabular-nums;background:var(--rank-rest);color:var(--text-secondary)}
 .bs-rank--1{background:var(--rank-1);color:var(--text-on-accent)}

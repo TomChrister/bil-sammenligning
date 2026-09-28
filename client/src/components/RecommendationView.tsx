@@ -20,7 +20,6 @@ import { PlateInput } from "../design-system/components/forms/PlateInput.jsx";
 import { Tabs } from "../design-system/components/navigation/Tabs.jsx";
 import { StepProgress } from "../design-system/components/navigation/StepProgress.jsx";
 import { Dialog } from "../design-system/components/feedback/Dialog.jsx";
-import { Toast } from "../design-system/components/feedback/Toast.jsx";
 import { HowItWorks } from "./HowItWorks";
 
 type Props = {
@@ -63,7 +62,6 @@ export function RecommendationView({
   onRestart,
 }: Props) {
   const [tab, setTab] = useState("alle");
-  const [toast, setToast] = useState(false);
   const [forklaringApen, setForklaringApen] = useState(false);
 
   const vinner = resultat.rangering[0];
@@ -81,10 +79,7 @@ export function RecommendationView({
       <div className="k-flowhead">
         <StepProgress steps={FLOW_STEPS} current={3} />
         <div className="flex gap-2">
-          <Button variant="secondary" icon="share-2" onClick={() => setToast(true)}>
-            Del resultatet
-          </Button>
-          <Button variant="ghost" icon="rotate-ccw" onClick={onRestart}>
+          <Button variant="secondary" icon="rotate-ccw" onClick={onRestart}>
             Start på nytt
           </Button>
         </div>
@@ -119,9 +114,7 @@ export function RecommendationView({
           value={tab}
           onChange={setTab}
           items={[
-            { value: "alle", label: "Alle kanaler", count: resultat.rangering.length },
-            { value: "rask", label: "Raskest oppgjør", icon: "clock" },
-            { value: "jobb", label: "Minst jobb", icon: "wrench" },
+            { value: "alle", label: "Alle kanaler", count: resultat.rangering.length }
           ]}
         />
       </div>
@@ -238,14 +231,6 @@ export function RecommendationView({
           <DisclosureNote variant="source" />
         </aside>
       </div>
-
-      {toast && (
-        <div className="fixed bottom-8 left-8 z-40">
-          <Toast tone="success" title="Lenke kopiert" onClose={() => setToast(false)}>
-            Rangeringen kan deles i 24 timer.
-          </Toast>
-        </div>
-      )}
 
       <Dialog
         open={forklaringApen}
