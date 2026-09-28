@@ -1,5 +1,5 @@
 /**
- * @startingPoint section="Feedback" subtitle="Dialog, toast, tooltip, skeleton" viewport="700x340"
+ * @startingPoint section="Feedback" subtitle="Dialog, tooltip, skeleton" viewport="700x340"
  */
 export interface DialogProps {
   open?: boolean;

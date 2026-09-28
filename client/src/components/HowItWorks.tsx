@@ -11,25 +11,13 @@ export function HowItWorks({ vinner }: Props) {
   return (
     <div className="flex flex-col gap-3 text-body-sm text-ink-secondary">
       <p>
-        Rangeringen er en poengsum, ikke et prisanslag. Den bygger på to ting: tekniske
-        kjøretøydata fra Statens vegvesen (alder, EU-kontroll, drivstoff, rekkevidde med mer),
-        og svarene du selv oppgir om tilstand, kilometerstand, hastverk, ønsket innsats,
-        heftelser og eventuelt eget verdianslag.
-      </p>
-
-      <p>
-        Hver salgskanal starter på et basispoeng som sier hva som er fornuftig for en helt
-        gjennomsnittlig bil. Derfra justerer et sett med regler poengsummen opp eller ned ut
-        fra akkurat din bil og din situasjon — for eksempel gir høy kilometerstand i forhold
-        til alder et løft til fastpris-oppkjøp og et trekk for privatsalg, mens en bil du
-        uansett skal bytte inn hos forhandler løftes kraftig mot innbytte.
-      </p>
-
-      <p>
-        Til slutt skaleres poengsummen til en indeks fra 40 til 100, slik at kanalene blir
-        enkle å sammenligne. Bunnen er bevisst ikke null — selv den lavest rangerte kanalen kan
-        være et reelt alternativ for deg. Under hver kanal ser du hvilke konkrete forhold som
-        talte for og imot, og hvilke aktører som faktisk tar imot bilen din.
+        Rangeringen er ikke et prisanslag, men et mål på hvor godt hver salgskanal passer for
+        akkurat din bil. Hver kanal starter med et basispoeng for en gjennomsnittlig bil, som
+        vi justerer opp eller ned ut fra kjøretøydataene og svarene dine. For eksempel løftes
+        fastpris-oppkjøp og trekkes privatsalg ned ved høy kilometerstand. Til slutt gjør vi
+        poengsummen om til et tall mellom 40 og 100 for hver kanal: jo høyere tall, jo bedre
+        passer kanalen. Tallet sier altså ingenting om pris — det brukes kun til å
+        sammenligne kanalene mot hverandre.
       </p>
 
       {vinner && (
@@ -75,8 +63,8 @@ export function HowItWorks({ vinner }: Props) {
             </div>
 
             <p className="mt-3">
-              De seks kanalenes sumpoeng skaleres deretter til en indeks fra 40 til 100. For{" "}
-              {vinner.navn.toLowerCase()} ga det en indeks på <strong>{vinner.indeks}</strong>.
+              Denne summen regner vi så om til et tall mellom 40 og 100, der høyere tall betyr
+              bedre match. For {vinner.navn.toLowerCase()} ble det <strong>{vinner.indeks}</strong>.
             </p>
           </div>
         </>

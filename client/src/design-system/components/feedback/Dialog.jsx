@@ -1,8 +1,18 @@
+import { useEffect } from "react";
 import { Icon } from "../core/Icon.jsx";
 import { IconButton } from "../core/IconButton.jsx";
 
 /** Modal over a scrim. Rendered only when \`open\`. */
 export function Dialog({ open = false, title, icon, children, footer, onClose, className = "", ...rest }) {
+  useEffect(() => {
+    if (!open) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [open]);
+
   if (!open) return null;
   return (
     <div className="bs-scrim" onClick={onClose}>
