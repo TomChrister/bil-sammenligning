@@ -1,6 +1,9 @@
 import type { VehicleLookupRequest, VehicleLookupResponse } from "../../../shared/vehicle";
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? "http://localhost:3001";
+// I dev kjører server og klient på hver sin port, så kallet må gå til den
+// separate serverporten. I produksjon (Vercel services) ligger client og
+// server bak samme domene via /api/*-rewriten, så kallet skal være relativt.
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? (import.meta.env.DEV ? "http://localhost:3001" : "");
 
 export async function slaOppKjoretoy(kjennemerke: string): Promise<VehicleLookupResponse> {
   const body: VehicleLookupRequest = { kjennemerke };
