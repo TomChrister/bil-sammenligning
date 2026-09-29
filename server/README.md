@@ -15,7 +15,7 @@ npm run dev
 
 ## Endepunkter
 
-- `GET /health` — enkel healthcheck
+- `GET /api/health` — enkel healthcheck
 - `POST /api/vehicle` — body `{ "kjennemerke": "EB11111" }`, returnerer normalisert `Vehicle`
 
 Kjennemerke sendes bevisst som POST-body og ikke som query-parameter, siden det
