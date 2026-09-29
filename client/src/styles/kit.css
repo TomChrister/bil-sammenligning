@@ -201,3 +201,32 @@
     gap: var(--space-2);
   }
 }
+
+/* Lenkerader (ProviderRow) på mørk seksjon */
+.k-section--dark .bs-provider {
+  background: transparent;
+  border-color: #ffffff47;
+}
+.k-section--dark .bs-provider:hover {
+  background: #ffffff0d;
+  border-color: var(--text-inverse-secondary);
+}
+.k-section--dark .bs-provider__mark {
+  background: #ffffff14;
+  color: var(--text-inverse);
+}
+.k-section--dark .bs-provider__name {
+  color: var(--text-inverse);
+}
+.k-section--dark .bs-provider__note,
+.k-section--dark .bs-provider__go {
+  color: var(--text-inverse-secondary);
+}
+.k-section--dark .bs-provider:hover .bs-provider__go {
+  color: var(--sitron-300);
+}
+
+/* Tydeligere kant på kort og tagger på forsiden */
+.k-border-strong {
+  border-color: var(--border-strong);
+}

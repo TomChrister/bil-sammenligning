@@ -10,6 +10,7 @@ const NAV_ITEMS = [
   { id: "slik-virker-det", label: "Slik virker det" },
   { id: "salgskanaler", label: "Salgskanaler" },
   { id: "om-dataene", label: "Om dataene" },
+  { id: "datakilde", label: "Datakilde" },
 ] as const;
 
 export function TopBar({ onHome, onStart, compact = false }: Props) {
