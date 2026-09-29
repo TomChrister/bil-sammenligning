@@ -7,6 +7,7 @@ import { Callout } from "../design-system/components/core/Callout.jsx";
 import { PlateInput } from "../design-system/components/forms/PlateInput.jsx";
 import { RankBadge } from "../design-system/components/product/RankBadge.jsx";
 import { DisclosureNote } from "../design-system/components/product/DisclosureNote.jsx";
+import { ProviderRow } from "../design-system/components/product/ProviderRow.jsx";
 
 type Props = {
     onSubmit: (kjennemerke: string) => void;
@@ -49,6 +50,27 @@ const EKSEMPEL_RADER = [
     { rank: 2, name: "Fastpris-oppkjøp", note: "Oppgjør 1–3 dager" },
     { rank: 3, name: "Innbytte", note: "Ved levering" },
     { rank: 4, name: "Privatsalg", note: "2–8 uker" },
+] as const;
+
+const DATAKILDE_LENKER = [
+    {
+        mark: "SVV",
+        name: "API for tekniske kjøretøyopplysninger",
+        note: "Om API-et, vilkår og bestilling hos vegvesen.no",
+        href: "https://www.vegvesen.no/kjoretoy/kjop-og-salg/kjoretoyopplysninger/api-er-for-tekniske-kjoretoyopplysninger/api-for-tekniske-kjoretoyopplysninger/",
+    },
+    {
+        mark: "API",
+        name: "Dokumentasjon for enkeltoppslag",
+        note: "Beskrivelse av felter og bruk",
+        href: "https://autosys-kjoretoy-api.atlas.vegvesen.no/api-ui/index-api.html?apiId=enkeltoppslag",
+    },
+    {
+        mark: "{ }",
+        name: "Swagger / OpenAPI",
+        note: "Teknisk spesifikasjon av endepunktet",
+        href: "https://akfell-datautlevering.atlas.vegvesen.no/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config#/enkelt-oppslag-resource/hentKjoretoydata",
+    },
 ] as const;
 
 function SectionHead({ eyebrow, title, action }: { eyebrow: string; title: string; action?: ReactNode }) {
@@ -131,7 +153,7 @@ export function LandingScreen({ onSubmit, loading, feil }: Props) {
                     <SectionHead eyebrow="Slik virker det" title="Tre steg, ingen registrering"/>
                     <div className="k-grid3">
                         {HVORDAN.map((h) => (
-                            <Card key={h.n} pad="md">
+                            <Card key={h.n} pad="md" className="k-border-strong">
                                 <div className="k-step">
                                     <div className="flex items-center gap-3">
                                         <Icon name={h.icon} size={24} strokeColor="var(--kobolt-600)"/>
@@ -173,14 +195,14 @@ export function LandingScreen({ onSubmit, loading, feil }: Props) {
                 </div>
             </section>
 
-            <section id="om-dataene" className="k-section k-section--dark">
+            <section id="om-dataene" className="k-section bg-card">
                 <div className="k-wrap grid grid-cols-1 items-center gap-16 md:grid-cols-[1.1fr_0.9fr]">
                     <div>
-                        <div className="k-eyebrow" style={{ color: "var(--sitron-300)" }}>
+                        <div className="k-eyebrow">
                             Om dataene
                         </div>
-                        <h2 className="my-3 text-ink-inverse">Tekniske data fra registeret, vurderingen fra deg</h2>
-                        <p className="max-w-[48ch] [font:var(--type-body-lg)] text-ink-inverse">
+                        <h2 className="my-3">Tekniske data fra registeret, vurderingen fra deg</h2>
+                        <p className="max-w-[48ch] [font:var(--type-body-lg)] text-ink-secondary">
                             Vi slår opp skiltnummeret hos Statens vegvesen og bruker de tekniske dataene som de
                             er. Alt som handler om tilstand, hastverk og egeninnsats er dine egne svar. Vi
                             legger ikke til en verdivurdering.
@@ -191,31 +213,53 @@ export function LandingScreen({ onSubmit, loading, feil }: Props) {
                             </Button>
                         </div>
                     </div>
-                    <Card tone="inverse" pad="md">
-                        <div className="mb-4 k-eyebrow" style={{ color: "var(--text-inverse-secondary)" }}>
+                    <Card pad="md" className="k-border-strong">
+                        <div className="mb-4 k-eyebrow">
                             Dette henter vi
                         </div>
                         <div className="flex flex-wrap gap-2">
                             {["Merke", "Modell", "Registreringsstatus", "Drivstoff", "Girkasse", "Effekt", "Egenvekt", "Karosseri", "Antall seter", "Totalvekt","Euroklasse", "CO2-utslipp", "Rekkevidde", "EU-kontroll"].map(
                                 (t) => (
-                                    <span
-                                        key={t}
-                                        className="bs-tag"
-                                        style={{
-                                            background: "transparent",
-                                            borderColor: "var(--border-inverse)",
-                                            color: "var(--text-inverse-secondary)"
-                                        }}
-                                    >
-                    {t}
-                  </span>
+                                    <span key={t} className="bs-tag k-border-strong">
+                                        {t}
+                                    </span>
                                 ),
                             )}
                         </div>
                         <div className="mt-6">
-                            <DisclosureNote variant="official" inverse/>
+                            <DisclosureNote variant="official"/>
                         </div>
                     </Card>
+                </div>
+            </section>
+
+            <section id="datakilde" className="k-section k-section--dark">
+                <div className="k-wrap grid grid-cols-1 items-center gap-16 md:grid-cols-[1.1fr_0.9fr]">
+                    <div>
+                        <div className="k-eyebrow" style={{ color: "var(--sitron-300)" }}>
+                            Datakilde
+                        </div>
+                        <h2 className="my-3 text-ink-inverse">Kjøretøydata fra Statens vegvesen</h2>
+                        <p className="max-w-[52ch] [font:var(--type-body-lg)] text-ink-inverse">
+                            Tekniske kjøretøyopplysninger hentes fra Statens vegvesens API for enkeltoppslag
+                            i motorvognregisteret (Autosys). Dataene er levert av Statens vegvesen og
+                            lisensiert under{" "}
+                            <a
+                                href="https://creativecommons.org/licenses/by/4.0/deed.no"
+                                target="_blank"
+                                rel="noreferrer"
+                                style={{ color: "var(--sitron-300)", textDecorationColor: "currentColor" }}
+                            >
+                                Creative Commons Navngivelse 4.0 (CC BY 4.0)
+                            </a>
+                            . Bilmatch er ikke tilknyttet Statens vegvesen.
+                        </p>
+                    </div>
+                    <div className="flex flex-col gap-2">
+                        {DATAKILDE_LENKER.map((l) => (
+                            <ProviderRow key={l.href} name={l.name} note={l.note} mark={l.mark} href={l.href}/>
+                        ))}
+                    </div>
                 </div>
             </section>
         </div>
