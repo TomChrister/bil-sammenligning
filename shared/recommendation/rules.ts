@@ -1,5 +1,5 @@
 import type { Vehicle } from "../vehicle";
-import type { Rule, SalgskanalId, SalgsvurderingInput } from "./types";
+import type { Rule, SalgskanalId } from "./types";
 
 /**
  * Vektskala. Alle tall i regelsettet skal hentes herfra, slik at justering av
@@ -653,4 +653,3 @@ export const rules: Rule[] = [
   heftelserRegel,
   verdinivaRegel,
 ];
-export type { SalgsvurderingInput };

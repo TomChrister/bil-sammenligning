@@ -140,12 +140,6 @@
 .bs-progress{height:4px;border-radius:var(--radius-pill);background:var(--surface-muted);overflow:hidden}
 .bs-progress__fill{height:100%;background:var(--surface-primary);border-radius:var(--radius-pill);transition:width var(--dur-base) var(--ease-out)}
 
-.bs-tabs{display:flex;gap:var(--space-1);border-bottom:var(--border-width) solid var(--border-subtle)}
-.bs-tab{position:relative;display:inline-flex;align-items:center;gap:var(--space-2);height:42px;padding:0 var(--space-3);border:0;background:none;font:var(--type-label);color:var(--text-secondary);transition:var(--transition-control)}
-.bs-tab:hover{color:var(--text-primary)}
-.bs-tab--active{color:var(--text-primary)}
-.bs-tab--active::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;background:var(--surface-primary)}
-.bs-tab:focus-visible{outline:var(--border-width-focus) solid var(--border-focus);outline-offset:-2px}
 
 .bs-crumbs{display:flex;align-items:center;gap:var(--space-2);font:var(--type-caption);color:var(--text-muted)}
 .bs-crumbs a{color:var(--text-muted);text-decoration:none}

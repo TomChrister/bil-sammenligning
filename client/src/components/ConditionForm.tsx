@@ -13,6 +13,8 @@ import { Button } from "../design-system/components/core/Button.jsx";
 
 type Props = {
   onSubmit: (input: SalgsvurderingInput) => void;
+  /** Tidligere svar, slik at "Endre" ikke nullstiller skjemaet. */
+  initial?: SalgsvurderingInput | null;
 };
 
 const TILSTANDER: { verdi: Tilstand; label: string; description: string }[] = [
@@ -77,14 +79,18 @@ function ChoiceGroup<T extends string>({
   );
 }
 
-export function ConditionForm({ onSubmit }: Props) {
-  const [kilometerstand, setKilometerstand] = useState(80000);
-  const [tilstand, setTilstand] = useState<Tilstand>("god");
-  const [hastverk, setHastverk] = useState<Hastverk>("normal");
-  const [onsketInnsats, setOnsketInnsats] = useState<Innsats>("noe");
-  const [planleggerNybilkjop, setPlanleggerNybilkjop] = useState(false);
-  const [heftelser, setHeftelser] = useState<HeftelserVerdi>("vet-ikke");
-  const [antattVerdi, setAntattVerdi] = useState("");
+export function ConditionForm({ onSubmit, initial }: Props) {
+  const [kilometerstand, setKilometerstand] = useState(initial?.kilometerstand ?? 80000);
+  const [tilstand, setTilstand] = useState<Tilstand>(initial?.tilstand ?? "god");
+  const [hastverk, setHastverk] = useState<Hastverk>(initial?.hastverk ?? "normal");
+  const [onsketInnsats, setOnsketInnsats] = useState<Innsats>(initial?.onsketInnsats ?? "noe");
+  const [planleggerNybilkjop, setPlanleggerNybilkjop] = useState(initial?.planleggerNybilkjop ?? false);
+  const [heftelser, setHeftelser] = useState<HeftelserVerdi>(
+    initial?.heftelser == null ? "vet-ikke" : initial.heftelser ? "ja" : "nei",
+  );
+  const [antattVerdi, setAntattVerdi] = useState(
+    initial?.antattVerdi == null ? "" : formatVerdi(String(initial.antattVerdi)),
+  );
 
   function handleSubmit(e: FormEvent) {
     e.preventDefault();
