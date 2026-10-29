@@ -41,7 +41,7 @@ export const LEVERANDORER: Leverandor[] = [
   // ---------- Forhandlerauksjon ----------
   {
     id: "nettbil",
-    navn: "Nettbil",
+    navn: "Nettbil.no",
     url: "https://www.nettbil.no/",
     kanal: "forhandlerauksjon",
     modell: "Budrunde blant over 2 000 forhandlere etter tilstandssjekk på testsenter.",
@@ -54,7 +54,7 @@ export const LEVERANDORER: Leverandor[] = [
   },
   {
     id: "bilskifte",
-    navn: "Bilskifte",
+    navn: "Bilskifte.no",
     url: "https://bilskifte.no/",
     kanal: "forhandlerauksjon",
     modell: "Budrunde blant forhandlere basert på bilder, uten obligatorisk testsenter.",
@@ -68,7 +68,7 @@ export const LEVERANDORER: Leverandor[] = [
   },
   {
     id: "bilnett",
-    navn: "Bilnett",
+    navn: "Bilnett.no",
     url: "https://www.bilnett.no/",
     kanal: "forhandlerauksjon",
     modell: "Budrunde blant forhandlere med tilstandssjekk, mindre nettverk enn Nettbil.",
@@ -82,7 +82,7 @@ export const LEVERANDORER: Leverandor[] = [
   // ---------- Fastpris-oppkjøp ----------
   {
     id: "rebil",
-    navn: "Rebil",
+    navn: "Rebil.no",
     url: "https://www.rebil.no/",
     kanal: "fastpris-oppkjop",
     modell: "Kjøper bilen direkte til fast tilbud, uten budrunde.",
@@ -94,7 +94,7 @@ export const LEVERANDORER: Leverandor[] = [
   },
   {
     id: "mobile",
-    navn: "Mobile",
+    navn: "Mobile.no",
     url: "https://mobile.no/selg-din-bil/",
     kanal: "fastpris-oppkjop",
     modell: "Forhandlerhus som kjøper bilen direkte etter innsendt skjema og visning.",
@@ -121,7 +121,7 @@ export const LEVERANDORER: Leverandor[] = [
   // ---------- Privatsalg ----------
   {
     id: "finn",
-    navn: "FINN motor",
+    navn: "FINN.no",
     url: "https://www.finn.no/",
     kanal: "privatsalg",
     modell: "Rubrikkannonse direkte til privatmarkedet.",
@@ -137,7 +137,7 @@ export const LEVERANDORER: Leverandor[] = [
   // ---------- Kommisjon ----------
   {
     id: "car4sale",
-    navn: "Car4Sale",
+    navn: "Car4Sale.no",
     url: "https://www.car4sale.no/",
     kanal: "kommisjon",
     modell: "Bilmegler som håndterer hele salget for deg og selger til privatmarkedspris.",

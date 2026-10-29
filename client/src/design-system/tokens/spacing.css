@@ -13,8 +13,8 @@
   --space-20: 80px;
 
   /* Layout */
-  --container-max: 1180px;
-  --container-narrow: 720px;
+  --container-max: 1250px;
+  --container-narrow: 840px;
 
   /* Control heights — 44px is the minimum touch target */
   --control-sm: 36px;
