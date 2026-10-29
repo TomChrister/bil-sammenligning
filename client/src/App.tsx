@@ -88,7 +88,7 @@ function App() {
 
         {step === "questions" && (
           <div className="mx-auto max-w-[var(--container-narrow)] px-4 py-10">
-            <ConditionForm onSubmit={handleSalgsvurdering} />
+            <ConditionForm onSubmit={handleSalgsvurdering} initial={svar} />
           </div>
         )}
 
