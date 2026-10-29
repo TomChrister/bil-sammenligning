@@ -3,21 +3,18 @@
   "private": true,
   "version": "0.0.0",
   "scripts": {
-    "dev": "tsx watch src/index.ts",
+    "dev": "tsx watch --env-file-if-exists=.env src/index.ts",
     "build": "tsc -b",
-    "start": "node dist/server/src/index.js",
+    "start": "node --env-file-if-exists=.env dist/server/src/index.js",
     "test": "vitest run",
     "generate:types": "node --env-file=.env scripts/generate-types.mjs"
   },
   "dependencies": {
-    "cors": "^2.8.5",
-    "dotenv": "^16.4.5",
     "express": "^4.21.2",
-    "express-rate-limit": "^7.4.1",
+    "express-rate-limit": "^8.7.1",
     "helmet": "^8.3.0"
   },
   "devDependencies": {
-    "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
     "@types/node": "^24.13.3",
     "openapi-typescript": "^7.4.4",

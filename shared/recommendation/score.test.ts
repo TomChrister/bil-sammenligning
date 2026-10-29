@@ -161,4 +161,11 @@ describe("beregnSalgsvurdering", () => {
     expect(forhandlere.map((l) => l.id)).not.toContain("bilnett");
     expect(forhandlere.map((l) => l.id)).toContain("bilskifte");
   });
+
+  it("filtrerer bort Mobile for Tesla, uansett store/små bokstaver i merket", () => {
+    const tesla = leverandorerForKanal("fastpris-oppkjop", lagBil({ merke: "TESLA" }), lagInput());
+    const golf = leverandorerForKanal("fastpris-oppkjop", lagBil(), lagInput());
+    expect(tesla.map((l) => l.id)).not.toContain("mobile");
+    expect(golf.map((l) => l.id)).toContain("mobile");
+  });
 });

@@ -5,13 +5,14 @@ type CacheEntry<T> = {
 
 /**
  * Enkel in-memory TTL-cache. Ingen persistens — nullstilles ved restart.
- * Brukes med ulik TTL for tekniske data (lang) vs. registreringsstatus/EU-kontroll (kort),
- * siden sistnevnte endres oftere.
  */
 export class MemoryCache<T> {
   private store = new Map<string, CacheEntry<T>>();
 
-  constructor(private readonly ttlMs: number) {}
+  constructor(
+    private readonly ttlMs: number,
+    private readonly sweepAbove = 1000,
+  ) {}
 
   get(key: string): T | undefined {
     const entry = this.store.get(key);
@@ -24,6 +25,14 @@ export class MemoryCache<T> {
   }
 
   set(key: string, value: T): void {
-    this.store.set(key, { value, expiresAt: Date.now() + this.ttlMs });
+    const now = Date.now();
+    // Utløpte oppføringer slettes ellers bare når samme nøkkel leses igjen,
+    // så uten denne ryddingen vokser Map-en med hvert nye kjennemerke.
+    if (this.store.size >= this.sweepAbove) {
+      for (const [k, entry] of this.store) {
+        if (now > entry.expiresAt) this.store.delete(k);
+      }
+    }
+    this.store.set(key, { value, expiresAt: now + this.ttlMs });
   }
 }

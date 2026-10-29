@@ -1,4 +1,5 @@
 import type { components } from "./types.generated";
+import { KvoteBruktOpp, KvoteUtilgjengelig, taKvote } from "./dailyQuota";
 
 export type KjoretoydataResponse = components["schemas"]["KjoretoydataResponse"];
 
@@ -24,8 +25,12 @@ export class AutosysKonfigurasjonsfeil extends Error {
   }
 }
 
-const MAX_RETRIES = 2;
+// Ett nytt forsøk holder for et enkelt nettverksblaff. Flere forsøk ganger bare
+// opp kvotebruken når Autosys faktisk er nede.
+const MAX_RETRIES = 1;
 const RETRY_BASE_DELAY_MS = 300;
+// Et kall som henger avbrytes og regnes som forbigående feil, så det prøves på nytt.
+const REQUEST_TIMEOUT_MS = 5000;
 
 function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -35,7 +40,11 @@ function sleep(ms: number) {
 // mens 4xx (ugyldig kjennemerke, manglende tilgang osv.) og oppsettsfeil hos oss
 // blir ikke bedre av å prøve igjen.
 function erTransientFeil(err: unknown): boolean {
-  if (err instanceof AutosysKonfigurasjonsfeil) {
+  if (
+    err instanceof AutosysKonfigurasjonsfeil ||
+    err instanceof KvoteBruktOpp ||
+    err instanceof KvoteUtilgjengelig
+  ) {
     return false;
   }
   if (err instanceof AutosysError) {
@@ -49,6 +58,9 @@ async function hentKjoretoydataUtenRetry(kjennemerke: string): Promise<Kjoretoyd
     throw new AutosysKonfigurasjonsfeil("AUTOSYS_HOST/AUTOSYS_API_KEY er ikke satt i miljøvariabler");
   }
 
+  // Telles før kallet, også ved nytt forsøk, siden hvert forsøk bruker av kvoten.
+  await taKvote();
+
   const url = new URL("/enkeltoppslag/kjoretoydata", AUTOSYS_HOST);
   url.searchParams.set("kjennemerke", kjennemerke);
 
@@ -57,6 +69,7 @@ async function hentKjoretoydataUtenRetry(kjennemerke: string): Promise<Kjoretoyd
       "SVV-Authorization": `Apikey ${AUTOSYS_API_KEY}`,
       Accept: "application/json",
     },
+    signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
   });
 
   // Autosys svarer 204 (tomt body) når kjennemerket ikke finnes.

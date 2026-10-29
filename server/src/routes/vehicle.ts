@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { hentKjoretoydata, AutosysError, AutosysKonfigurasjonsfeil } from "../autosys/client";
+import { KvoteBruktOpp, KvoteUtilgjengelig } from "../autosys/dailyQuota";
 import { normalizeVehicle } from "../autosys/normalize";
 import { vehicleCache } from "../cache/vehicleCache";
 import { isValidPlate, normalizePlate } from "../utils/validatePlate";
@@ -56,6 +57,24 @@ vehicleRouter.post("/vehicle", async (req, res) => {
         error: "Tjenesten er ikke riktig konfigurert på serveren. Kontakt driftsansvarlig.",
       };
       res.status(500).json(response);
+      return;
+    }
+
+    if (err instanceof KvoteBruktOpp) {
+      const response: VehicleLookupResponse = {
+        ok: false,
+        error: "Tjenesten har nådd dagens grense for oppslag. Prøv igjen i morgen.",
+      };
+      res.status(503).json(response);
+      return;
+    }
+
+    if (err instanceof KvoteUtilgjengelig) {
+      const response: VehicleLookupResponse = {
+        ok: false,
+        error: "Oppslag er midlertidig utilgjengelig. Prøv igjen om litt.",
+      };
+      res.status(503).json(response);
       return;
     }
 
