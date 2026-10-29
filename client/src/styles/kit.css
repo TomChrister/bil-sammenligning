@@ -17,7 +17,8 @@
   align-items: center;
   gap: var(--space-8);
   height: 68px;
-  padding: 0 var(--space-8);
+  /* Matches .k-wrap so the bar content lines up with the page content. */
+  padding: 0 max(var(--space-8), (100% - var(--container-max)) / 2 + var(--space-8));
   background: #ffffffe6;
   backdrop-filter: var(--blur-chrome);
   border-bottom: 1px solid var(--border-subtle);
@@ -88,9 +89,12 @@
 .k-lookup {
   display: flex;
   gap: var(--space-3);
-  align-items: center;
+  align-items: stretch;
   margin: var(--space-8) 0 var(--space-4);
   flex-wrap: wrap;
+}
+.k-lookup .bs-btn {
+  height: auto;
 }
 .k-section {
   padding: var(--space-16) 0;

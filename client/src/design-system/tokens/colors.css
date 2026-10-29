@@ -89,9 +89,12 @@
 
   /* Rank ladder — used by the channel ranking, strongest to weakest */
   --rank-1: var(--sitron-400);
-  --rank-2: var(--kobolt-200);
-  --rank-3: var(--asphalt-200);
-  --rank-rest: var(--asphalt-100);
+  /* Kobolt ramp fades with rank so lower places read as less prominent. */
+  --rank-2: var(--kobolt-700);
+  --rank-3: var(--kobolt-600);
+  --rank-4: var(--kobolt-500);
+  --rank-5: var(--kobolt-400);
+  --rank-rest: var(--kobolt-200);
 
   /* Effects */
   --overlay-scrim: #0d1116b8;

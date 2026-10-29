@@ -171,15 +171,15 @@ export function RecommendationView({
                           <TradeoffMeter key={m.label} {...m} />
                         ))}
                       </div>
-                      <div className="flex flex-col gap-2">
-                        {kanal.leverandorer.map((l) => (
-                          <ProviderRow key={l.id} name={l.navn} note={l.modell} href={l.url || undefined} />
-                        ))}
-                      </div>
                     </>
                   ) : (
                     <ReasonList items={alleGrunner.slice(0, 1)} />
                   )}
+                  <div className="flex flex-col gap-2">
+                    {kanal.leverandorer.map((l) => (
+                      <ProviderRow key={l.id} name={l.navn} note={l.modell} href={l.url || undefined} />
+                    ))}
+                  </div>
                 </ChannelRankCard>
               </div>
             );
