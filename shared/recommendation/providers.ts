@@ -1,4 +1,4 @@
-import type { SalgskanalId, SalgsvurderingInput, Tilstand } from "./types";
+import type { SalgskanalId, SalgsvurderingInput } from "./types";
 import type { Vehicle } from "../vehicle";
 
 /**
@@ -29,12 +29,9 @@ export type Leverandor = {
   krav?: {
     kreverTestsenter?: boolean;
     kreverKjorbar?: boolean;
-    maksAlderAr?: number;
-    tarIkke?: string[];
-    kunBedrift?: boolean;
+    /** Bilmerker aktøren ikke tar imot. Sammenlignes uten hensyn til store/små bokstaver. */
+    tarIkkeMerker?: string[];
   };
-  /** Dekning. "landsdekkende" eller liste over fylker. */
-  dekning: "landsdekkende" | string[];
   merknad?: string;
   sistVerifisert: string;
   uverifisert?: boolean;
@@ -51,7 +48,6 @@ export const LEVERANDORER: Leverandor[] = [
     kostnadSelger: "Gratis for selger. Nettbil betales av forhandleren som kjøper bilen.",
     utbetaling: "Få dager etter akseptert bud.",
     krav: { kreverTestsenter: true, kreverKjorbar: true },
-    dekning: "landsdekkende",
     merknad:
       "Testsentrene drives sammen med NAF og Viking. Tilstandssjekken er obligatorisk, så bilen må kunne kjøres dit.",
     sistVerifisert: "2026-09-20",
@@ -65,7 +61,6 @@ export const LEVERANDORER: Leverandor[] = [
     kostnadSelger: "Oppgis som gratis for selger. Forhandlerens gebyr legges på budet.",
     utbetaling: "Oppgitt 1 til 3 dager.",
     krav: { kreverTestsenter: false },
-    dekning: "landsdekkende",
     merknad:
       "Lavere terskel enn Nettbil siden bilen ikke må leveres på testsenter, men budet gis på bilder og kan justeres ved henting.",
     sistVerifisert: "2026-09-20",
@@ -80,7 +75,6 @@ export const LEVERANDORER: Leverandor[] = [
     kostnadSelger: "Oppgis som nettopris uten påslag for selger.",
     utbetaling: "Oppgitt 3 til 7 dager.",
     krav: { kreverTestsenter: true, kreverKjorbar: true },
-    dekning: "landsdekkende",
     sistVerifisert: "2026-09-20",
     uverifisert: true,
   },
@@ -95,7 +89,6 @@ export const LEVERANDORER: Leverandor[] = [
     kostnadSelger: "Ingen separat kostnad. Marginen ligger i tilbudet.",
     utbetaling: "Oppgitt 1 til 3 dager.",
     krav: {},
-    dekning: "landsdekkende",
     merknad: "Én motpart gjennom hele prosessen. Enklest, men ingen konkurranse om bilen.",
     sistVerifisert: "2026-09-20",
   },
@@ -107,9 +100,8 @@ export const LEVERANDORER: Leverandor[] = [
     modell: "Forhandlerhus som kjøper bilen direkte etter innsendt skjema og visning.",
     kostnadSelger: "Oppgis som gratis og uforpliktende.",
     utbetaling: "Få virkedager etter levering.",
-    krav: { tarIkke: ["gamle biler", "Tesla", "motorsykkel", "lastebil"] },
-    dekning: "landsdekkende",
-    merknad: "Tar ikke imot alle biler. Sjekk forbeholdene før den vises som et alternativ.",
+    krav: { tarIkkeMerker: ["Tesla"] },
+    merknad: "Tar ikke imot gamle biler, motorsykkel eller lastebil.",
     sistVerifisert: "2026-09-20",
   },
   {
@@ -121,7 +113,6 @@ export const LEVERANDORER: Leverandor[] = [
     kostnadSelger: "Ingen separat kostnad.",
     utbetaling: "Oppgis som rask.",
     krav: { kreverKjorbar: false },
-    dekning: "landsdekkende",
     merknad: "Relevant nettopp når bilen ikke er kjørbar eller har kjente feil.",
     sistVerifisert: "2026-09-20",
     uverifisert: true,
@@ -137,7 +128,6 @@ export const LEVERANDORER: Leverandor[] = [
     kostnadSelger: "Annonsepakke, i størrelsesorden noen hundre kroner.",
     utbetaling: "Når bilen faktisk blir solgt, typisk uker.",
     krav: {},
-    dekning: "landsdekkende",
     merknad:
       "Du beholder mangelsansvaret etter kjøpsloven i fem år. Det er en reell risiko som bør stå i UI.",
     sistVerifisert: "2026-09-20",
@@ -155,7 +145,6 @@ export const LEVERANDORER: Leverandor[] = [
       "Fast gebyr av salgssummen, oppgitt til 16 990 kr, i tillegg til klargjøring rundt 1 800 kr. Ingen salg gir ingen gebyr.",
     utbetaling: "Når bilen er solgt, typisk 30 til 90 dager.",
     krav: {},
-    dekning: "landsdekkende",
     merknad:
       "Fast gebyr gjør kanalen dyr for rimelige biler. Under rundt 100 000 kr spiser gebyret for mye av verdien.",
     sistVerifisert: "2026-09-20",
@@ -170,7 +159,6 @@ export const LEVERANDORER: Leverandor[] = [
     kostnadSelger: "Provisjon eller fast gebyr, varierer mye. Forhandles lokalt.",
     utbetaling: "Når bilen er solgt.",
     krav: {},
-    dekning: "landsdekkende",
     merknad:
       "Generisk oppføring. Bør på sikt erstattes av en liste med faktiske forhandlere per fylke.",
     sistVerifisert: "2026-09-20",
@@ -186,7 +174,6 @@ export const LEVERANDORER: Leverandor[] = [
     kostnadSelger: "Ingen direkte kostnad. Prisen er normalt lavest av alternativene.",
     utbetaling: "Motregnes ved levering av den nye bilen.",
     krav: {},
-    dekning: "landsdekkende",
     merknad:
       "Vurder innbytteprisen mot det du ville fått på auksjon, og be om pris på den nye bilen uten innbytte for å se den reelle verdien.",
     sistVerifisert: "2026-09-20",
@@ -202,21 +189,11 @@ export const LEVERANDORER: Leverandor[] = [
     kostnadSelger: "Varierer med oppdrag.",
     utbetaling: "Varierer.",
     krav: {},
-    dekning: "landsdekkende",
     merknad: "Mest aktuelt for nisjekjøretøy, næringskjøretøy og biler med kjente feil.",
     sistVerifisert: "2026-09-20",
     uverifisert: true,
   },
 ];
-
-function alderIAr(vehicle: Vehicle): number | null {
-  if (!vehicle.forstegangsregistrert) return null;
-  const t = new Date(vehicle.forstegangsregistrert).getTime();
-  if (Number.isNaN(t)) return null;
-  return (Date.now() - t) / (1000 * 60 * 60 * 24 * 365.25);
-}
-
-const IKKE_KJORBAR: Tilstand[] = ["ikke-kjorbar"];
 
 /**
  * Filtrerer bort aktører som åpenbart ikke tar denne bilen.
@@ -228,13 +205,13 @@ export function leverandorerForKanal(
   vehicle: Vehicle,
   input: SalgsvurderingInput,
 ): Leverandor[] {
-  const alder = alderIAr(vehicle);
+  const ikkeKjorbar = input.tilstand === "ikke-kjorbar";
+  const merke = vehicle.merke?.toLowerCase();
 
   return LEVERANDORER.filter((l) => l.kanal === kanal).filter((l) => {
-    if (l.krav?.kunBedrift) return false;
-    if (l.krav?.kreverKjorbar && IKKE_KJORBAR.includes(input.tilstand)) return false;
-    if (l.krav?.kreverTestsenter && IKKE_KJORBAR.includes(input.tilstand)) return false;
-    if (l.krav?.maksAlderAr != null && alder != null && alder > l.krav.maksAlderAr) return false;
+    // Testsenter krever at bilen kjøres dit, så begge kravene faller bort på samme vilkår.
+    if ((l.krav?.kreverKjorbar || l.krav?.kreverTestsenter) && ikkeKjorbar) return false;
+    if (merke && l.krav?.tarIkkeMerker?.some((m) => m.toLowerCase() === merke)) return false;
     return true;
   });
 }

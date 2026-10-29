@@ -1,18 +1,21 @@
 import type { VehicleLookupRequest, VehicleLookupResponse } from "../../../shared/vehicle";
 
-// I dev kjører server og klient på hver sin port, så kallet må gå til den
-// separate serverporten. I produksjon (Vercel services) ligger client og
-// server bak samme domene via /api/*-rewriten, så kallet skal være relativt.
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? (import.meta.env.DEV ? "http://localhost:3001" : "");
-
+// Alltid relativt: i produksjon sender Vercel /api/* til server-tjenesten,
+// og lokalt sender Vite-proxyen (vite.config.ts) det videre til port 3001.
 export async function slaOppKjoretoy(kjennemerke: string): Promise<VehicleLookupResponse> {
   const body: VehicleLookupRequest = { kjennemerke };
 
-  const res = await fetch(`${API_BASE_URL}/api/vehicle`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(body),
-  });
+  // Nettverksfeil eller et svar som ikke er JSON (f.eks. en HTML-feilside fra
+  // Vercel ved timeout) skal bli en feilmelding, ikke et kall som aldri returnerer.
+  try {
+    const res = await fetch("/api/vehicle", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
 
-  return (await res.json()) as VehicleLookupResponse;
+    return (await res.json()) as VehicleLookupResponse;
+  } catch {
+    return { ok: false, error: "Fikk ikke kontakt med tjenesten. Prøv igjen om litt." };
+  }
 }

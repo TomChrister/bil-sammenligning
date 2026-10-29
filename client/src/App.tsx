@@ -9,6 +9,7 @@ import type { Vehicle } from "../../shared/vehicle";
 import type { SalgsvurderingInput } from "../../shared/recommendation/types";
 import { TopBar } from "./components/TopBar";
 import { LandingScreen } from "./components/LandingScreen";
+import { scrollTilOppslag } from "./lib/scrollTilOppslag";
 import { VehicleResult } from "./components/VehicleResult";
 import { ConditionForm } from "./components/ConditionForm";
 import { RecommendationView } from "./components/RecommendationView";
@@ -64,14 +65,9 @@ function App() {
     setFeil(null);
   }
 
-  function fokuserSkiltInput() {
-    document.getElementById("skilt-oppslag")?.scrollIntoView({ behavior: "smooth", block: "center" });
-    document.getElementById("skilt-input")?.focus({ preventScroll: true });
-  }
-
   return (
     <div className="k-shell">
-      <TopBar onHome={startPaNytt} onStart={fokuserSkiltInput} compact={step !== "landing"} />
+      <TopBar onHome={startPaNytt} onStart={scrollTilOppslag} compact={step !== "landing"} />
 
       <main className="k-main">
         {step === "landing" && (
@@ -116,8 +112,6 @@ function App() {
           </div>
         )}
       </main>
-
-      {step === "landing"}
     </div>
   );
 }

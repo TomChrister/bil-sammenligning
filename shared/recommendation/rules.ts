@@ -653,7 +653,4 @@ export const rules: Rule[] = [
   heftelserRegel,
   verdinivaRegel,
 ];
-
-/** Eksporteres for testformål. */
-export const _internals = { alderIAr, dagerTil, erElektrisk };
 export type { SalgsvurderingInput };

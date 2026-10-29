@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { RegnrForm } from "./RegnrForm";
+import { scrollTilOppslag } from "../lib/scrollTilOppslag";
 import { Card } from "../design-system/components/core/Card.jsx";
 import { Icon } from "../design-system/components/core/Icon.jsx";
 import { Button } from "../design-system/components/core/Button.jsx";
@@ -112,11 +113,6 @@ function HeroPreview() {
             </div>
         </Card>
     );
-}
-
-function scrollTilOppslag() {
-    document.getElementById("skilt-oppslag")?.scrollIntoView({ behavior: "smooth", block: "center" });
-    document.getElementById("skilt-input")?.focus({ preventScroll: true });
 }
 
 export function LandingScreen({ onSubmit, loading, feil }: Props) {

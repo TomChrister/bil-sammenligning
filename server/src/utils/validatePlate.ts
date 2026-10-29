@@ -1,6 +1,6 @@
 // Dekker vanlige kjennemerker (2 bokstaver + 4-5 siffer) og personlige kjennemerker
 // (2-7 alfanumeriske tegn). Ikke uttømmende for alle norske skiltkategorier.
-const PLATE_PATTERN = /^[A-Z0-9]{4,8}$/;
+const PLATE_PATTERN = /^[A-Z0-9]{2,7}$/;
 
 export function normalizePlate(raw: string): string {
   return raw.trim().toUpperCase().replace(/\s+/g, "");

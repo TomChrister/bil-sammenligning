@@ -19,7 +19,7 @@ og er et hobbyprosjekt, ikke en offisiell eller Vegvesen-godkjent tjeneste.
 | --- | --- |
 | Frontend | React 19, TypeScript, Vite, Tailwind CSS 4 |
 | Backend | Node.js, Express 4, TypeScript |
-| Sikkerhet | Helmet, CORS, express-rate-limit |
+| Sikkerhet | Helmet, express-rate-limit |
 | Datakilde | Statens vegvesen Autosys enkeltoppslag-API, med typer generert fra OpenAPI via openapi-typescript |
 | Tester | Vitest |
 | Hosting | Vercel (Vercel Services), Vercel Analytics |
@@ -62,15 +62,17 @@ Hele appen deployes som ett Vercel-prosjekt med
   `index.html`, så direkte lenker fungerer.
 
 Client og server ligger på samme domene, så klienten kaller `/api` relativt,
-og CORS er ikke nødvendig i produksjon. Hver deploy bygger og publiserer
-begge tjenestene samtidig.
+og CORS trengs ikke. Lokalt gjør Vite-proxyen det samme. Hver deploy bygger
+og publiserer begge tjenestene samtidig.
 
 Miljøvariabler som må settes i Vercel-prosjektet:
 
 - `AUTOSYS_HOST`
 - `AUTOSYS_API_KEY`
-
-Ikke sett `VITE_API_BASE_URL` i Vercel. Den er bare for lokal utvikling.
+- `KV_REST_API_URL` og `KV_REST_API_TOKEN`, som settes automatisk når Upstash
+  Redis kobles til prosjektet under Storage. Uten disse nekter serveren oppslag
+  på Vercel, fordi døgngrensen for Autosys-kall (`server/src/autosys/dailyQuota.ts`)
+  ikke kan telles. Lokalt telles det i minnet.
 
 ## Prosjektstruktur
 
@@ -114,9 +116,8 @@ npm run dev             # http://localhost:3001
 
 # Client (i et eget terminalvindu)
 cd client
-cp .env.example .env
 npm install
-npm run dev             # http://localhost:5173
+npm run dev             # http://localhost:5173, /api proxes til serveren
 ```
 
 Tester for anbefalingsmotoren kjøres fra `server`:

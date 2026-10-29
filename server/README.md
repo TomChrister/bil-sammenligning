@@ -42,9 +42,10 @@ Referer-header eller analytics.
 
 ## Anbefalingsmotor
 
-Ligger i `../shared/recommendation/` (rules.ts + engine.ts), ikke i `server/`,
+Ligger i `../shared/recommendation/` (rules.ts + score.ts), ikke i `server/`,
 fordi den er ren TypeScript-logikk uten avhengighet til Node/Express og derfor
-kan kjøre direkte i klienten. Enhetstester: `../shared/recommendation/engine.test.ts`.
+kan kjøre direkte i klienten. Enhetstester: `../shared/recommendation/score.test.ts`.
+Serverens egne tester ligger ved siden av koden i `src/` (`*.test.ts`).
 
 ```bash
 npm test

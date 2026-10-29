@@ -17,7 +17,6 @@ import { Icon } from "../design-system/components/core/Icon.jsx";
 import { Button } from "../design-system/components/core/Button.jsx";
 import { Divider } from "../design-system/components/core/Divider.jsx";
 import { PlateInput } from "../design-system/components/forms/PlateInput.jsx";
-import { Tabs } from "../design-system/components/navigation/Tabs.jsx";
 import { StepProgress } from "../design-system/components/navigation/StepProgress.jsx";
 import { Dialog } from "../design-system/components/feedback/Dialog.jsx";
 import { HowItWorks } from "./HowItWorks";
@@ -61,7 +60,6 @@ export function RecommendationView({
   onRediger,
   onRestart,
 }: Props) {
-  const [tab, setTab] = useState("alle");
   const [forklaringApen, setForklaringApen] = useState(false);
 
   const vinner = resultat.rangering[0];
@@ -116,16 +114,6 @@ export function RecommendationView({
           </div>
           <PlateInput value={vehicle.kjennemerke} readOnly />
         </div>
-      </div>
-
-      <div className="mb-6">
-        <Tabs
-          value={tab}
-          onChange={setTab}
-          items={[
-            { value: "alle", label: "Alle kanaler", count: resultat.rangering.length }
-          ]}
-        />
       </div>
 
       {resultat.forbehold.length > 0 && (
