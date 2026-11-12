@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { Router, type Response } from "express";
 import { hentKjoretoydata, AutosysError, AutosysKonfigurasjonsfeil } from "../autosys/client";
 import { KvoteBruktOpp, KvoteUtilgjengelig } from "../autosys/dailyQuota";
 import { normalizeVehicle } from "../autosys/normalize";
@@ -9,6 +9,33 @@ import type { VehicleLookupRequest, VehicleLookupResponse } from "../../../share
 
 export const vehicleRouter = Router();
 
+function sendFeil(res: Response, status: number, error: string) {
+  const response: VehicleLookupResponse = { ok: false, error };
+  res.status(status).json(response);
+}
+
+function feilsvar(err: unknown): [status: number, error: string] {
+  if (err instanceof AutosysKonfigurasjonsfeil) {
+    return [500, "Tjenesten er ikke riktig konfigurert på serveren. Kontakt driftsansvarlig."];
+  }
+  if (err instanceof KvoteBruktOpp) {
+    return [503, "Tjenesten har nådd dagens grense for oppslag. Prøv igjen i morgen."];
+  }
+  if (err instanceof KvoteUtilgjengelig) {
+    return [503, "Oppslag er midlertidig utilgjengelig. Prøv igjen om litt."];
+  }
+  // Nettverksfeil (timeout/ECONNRESET) eller 5xx betyr som regel at Statens
+  // vegvesen sin egen tjeneste er nede eller ustabil, ikke at noe er galt hos oss.
+  const status = err instanceof AutosysError ? err.status : undefined;
+  if (status === undefined || status >= 500) {
+    return [
+      503,
+      "Statens vegvesen sin oppslagstjeneste er utilgjengelig eller ustabil akkurat nå. Prøv igjen om litt.",
+    ];
+  }
+  return [502, "Klarte ikke hente kjøretøydata akkurat nå"];
+}
+
 // POST i stedet for GET/query: kjennemerke regnes som personopplysning og skal
 // ikke havne i URL-en (unngår lekkasje via serverlogger, Referer-header, analytics).
 vehicleRouter.post("/vehicle", async (req, res) => {
@@ -16,8 +43,7 @@ vehicleRouter.post("/vehicle", async (req, res) => {
   const rawPlate = body?.kjennemerke;
 
   if (typeof rawPlate !== "string" || !isValidPlate(rawPlate)) {
-    const response: VehicleLookupResponse = { ok: false, error: "Ugyldig kjennemerke" };
-    res.status(400).json(response);
+    sendFeil(res, 400, "Ugyldig kjennemerke");
     return;
   }
 
@@ -34,11 +60,7 @@ vehicleRouter.post("/vehicle", async (req, res) => {
     const raw = await hentKjoretoydata(plate);
 
     if (raw.feilmelding || !raw.kjoretoydataListe?.length) {
-      const response: VehicleLookupResponse = {
-        ok: false,
-        error: raw.feilmelding ?? "Fant ikke kjøretøy på dette skiltnummeret",
-      };
-      res.status(404).json(response);
+      sendFeil(res, 404, raw.feilmelding ?? "Fant ikke kjøretøy på dette skiltnummeret");
       return;
     }
 
@@ -50,44 +72,6 @@ vehicleRouter.post("/vehicle", async (req, res) => {
   } catch (err) {
     const status = err instanceof AutosysError ? err.status : undefined;
     console.error(`Autosys-oppslag feilet for ${maskPlate(plate)}`, status ?? err);
-
-    if (err instanceof AutosysKonfigurasjonsfeil) {
-      const response: VehicleLookupResponse = {
-        ok: false,
-        error: "Tjenesten er ikke riktig konfigurert på serveren. Kontakt driftsansvarlig.",
-      };
-      res.status(500).json(response);
-      return;
-    }
-
-    if (err instanceof KvoteBruktOpp) {
-      const response: VehicleLookupResponse = {
-        ok: false,
-        error: "Tjenesten har nådd dagens grense for oppslag. Prøv igjen i morgen.",
-      };
-      res.status(503).json(response);
-      return;
-    }
-
-    if (err instanceof KvoteUtilgjengelig) {
-      const response: VehicleLookupResponse = {
-        ok: false,
-        error: "Oppslag er midlertidig utilgjengelig. Prøv igjen om litt.",
-      };
-      res.status(503).json(response);
-      return;
-    }
-
-    // Nettverksfeil (timeout/ECONNRESET) eller 5xx betyr som regel at Statens
-    // vegvesen sin egen tjeneste er nede eller ustabil, ikke at noe er galt hos oss.
-    const tjenestenErNede = status === undefined || status >= 500;
-
-    const response: VehicleLookupResponse = {
-      ok: false,
-      error: tjenestenErNede
-        ? "Statens vegvesen sin oppslagstjeneste er utilgjengelig eller ustabil akkurat nå. Prøv igjen om litt."
-        : "Klarte ikke hente kjøretøydata akkurat nå",
-    };
-    res.status(tjenestenErNede ? 503 : 502).json(response);
+    sendFeil(res, ...feilsvar(err));
   }
 });
