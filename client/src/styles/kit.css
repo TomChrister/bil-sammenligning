@@ -1,7 +1,6 @@
-/* Page-layout classes for the marketing/flow chrome (top bar, hero, sections, footer).
-   Not part of the design system proper — these are the "k-*" layout primitives the
-   Claude Design UI kit ships alongside its own screens, brought in verbatim so this
-   app's structure matches the approved design. */
+/* Sidelayout (toppstripe, hero, seksjoner, flyt). Ikke en del av designsystemet;
+   dette er appens egne "k-*"-primitiver bygget på systemets tokens.
+   Rytmen kommer av flateskift (paper / chalk / grafitt) og hårstreker, ikke kort. */
 
 .k-shell {
   min-height: 100%;
@@ -9,109 +8,178 @@
   flex-direction: column;
   background: var(--surface-page);
 }
+
+/* ---------- toppstripe ---------- */
 .k-bar {
   position: sticky;
   top: 0;
   z-index: 20;
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  gap: var(--space-8);
-  height: 68px;
+  gap: var(--space-4);
+  height: 60px;
   /* Matches .k-wrap so the bar content lines up with the page content. */
-  padding: 0 max(var(--space-8), (100% - var(--container-max)) / 2 + var(--space-8));
-  background: #ffffffe6;
-  backdrop-filter: var(--blur-chrome);
+  padding: 0 max(var(--gutter), (100% - var(--container-max)) / 2 + var(--gutter));
+  background: var(--surface-card);
   border-bottom: 1px solid var(--border-subtle);
 }
 .k-wordmark {
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-variation-settings: "wdth" 112;
-  letter-spacing: -0.022em;
-  font-size: 20px;
+  justify-self: start;
+  font: var(--weight-semibold) 20px / 1 var(--font-display);
+  letter-spacing: var(--tracking-heading);
   color: var(--text-primary);
   text-decoration: none;
   white-space: nowrap;
 }
 .k-nav {
   display: flex;
-  gap: var(--space-6);
-  margin-right: auto;
+  gap: var(--space-1);
 }
 .k-nav a {
-  font: var(--type-body-sm);
-  color: var(--text-secondary);
+  padding: 8px 16px;
+  border-radius: var(--radius-pills);
+  font: var(--type-label);
+  color: var(--text-primary);
   text-decoration: none;
+  transition: var(--transition-control);
 }
 .k-nav a:hover {
-  color: var(--text-primary);
+  background: var(--surface-sunken);
 }
+.k-bar__stepcount {
+  display: none;
+  font: var(--type-caption);
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+.k-bar__end {
+  grid-column: 3;
+  justify-self: end;
+}
+
+/* ---------- felles ---------- */
 .k-main {
   flex: 1;
 }
 .k-wrap {
   max-width: var(--container-max);
   margin: 0 auto;
-  padding: 0 var(--space-8);
+  padding: 0 var(--gutter);
 }
-.k-hero {
-  display: grid;
-  grid-template-columns: 1.05fr 0.95fr;
-  gap: var(--space-16);
-  align-items: center;
-  padding: var(--space-20) 0 var(--space-16);
+/* Chalk-flate. Hårstreker og dempede flater går ett trinn mørkere for å synes på den. */
+.k-chalk {
+  background: var(--surface-sunken);
+  --border-subtle: var(--color-ash);
+  --surface-muted: var(--color-ash);
 }
 .k-eyebrow {
-  font: var(--type-eyebrow);
-  letter-spacing: var(--tracking-eyebrow);
-  text-transform: uppercase;
-  color: var(--text-muted);
   display: flex;
   align-items: center;
   gap: var(--space-2);
   margin-bottom: var(--space-3);
-  font-size: 12px;
-}
-.k-h1 {
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-variation-settings: "wdth" 112;
-  letter-spacing: -0.022em;
-  line-height: 1.02;
-  font-size: 58px;
-  margin: var(--space-4) 0 var(--space-5);
+  font: var(--type-eyebrow);
+  color: var(--text-secondary);
 }
 .k-lead {
   font: var(--type-body-lg);
   color: var(--text-secondary);
-  max-width: 44ch;
+  max-width: 52ch;
+}
+/* Typeroller for overskrifter som skal se mindre ut enn nivået sitt. Utilities kan
+   ikke brukes til det: reset.css er ulagdelt og vinner over Tailwinds lag. */
+.k-h3 {
+  font: var(--type-h3);
+  letter-spacing: var(--tracking-heading);
+}
+.k-h4 {
+  font: var(--type-h4);
+  letter-spacing: var(--tracking-ui);
+}
+.k-label {
+  font: var(--type-label);
+  letter-spacing: var(--tracking-ui);
+}
+.k-bullets {
+  list-style: disc outside;
+  padding-left: 1.2em;
+}
+/* Liste av flate rader skilt med hårstrek. */
+.k-rows {
+  border-top: 1px solid var(--border-subtle);
+}
+.k-rows > * {
+  border-bottom: 1px solid var(--border-subtle);
+}
+.k-rowtitle {
+  display: block;
+  font: var(--weight-medium) var(--text-subheading) / var(--leading-subheading) var(--font-core);
+}
+
+/* ---------- forside ---------- */
+.k-hero {
+  padding: clamp(var(--spacing-56), 9vw, var(--spacing-112)) 0;
+}
+.k-hero__grid {
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: var(--spacing-80);
+  align-items: center;
+}
+.k-h1 {
+  font: var(--weight-medium) clamp(40px, 6vw, var(--text-display)) / var(--leading-display) var(--font-display);
+  letter-spacing: -0.042em;
+  margin-bottom: var(--space-6);
 }
 .k-lookup {
   display: flex;
   gap: var(--space-3);
   align-items: stretch;
-  margin: var(--space-8) 0 var(--space-4);
+  margin: var(--space-10) 0 var(--space-5);
   flex-wrap: wrap;
 }
 .k-lookup .bs-btn {
   height: auto;
+  min-height: var(--control-lg);
+}
+/* Eksempelresultatet i heroen: sidens ene panel, flatt på chalk. */
+.k-panel {
+  background: var(--surface-card);
+  border-radius: var(--radius-cards);
+  padding: clamp(var(--card-padding), 3vw, var(--spacing-40));
+  --border-subtle: var(--color-concrete);
+  --surface-muted: var(--color-concrete);
 }
 .k-section {
-  padding: var(--space-16) 0;
-  border-top: 1px solid var(--border-subtle);
-  scroll-margin-top: 68px;
+  padding: var(--section-gap) 0;
+  scroll-margin-top: 60px;
 }
 .k-section--dark {
   background: var(--surface-inverse);
   color: var(--text-inverse);
-  border: 0;
+  --border-subtle: var(--border-inverse);
+}
+.k-section--dark a {
+  color: inherit;
+}
+.k-section--dark .k-eyebrow,
+.k-section--dark .bs-provider__note,
+.k-section--dark .bs-provider__go {
+  color: var(--text-inverse-secondary);
+}
+.k-section--dark .bs-provider:hover .bs-provider__go {
+  color: var(--text-inverse);
+}
+.k-section--dark .bs-provider__mark {
+  background: #ffffff14;
+  color: var(--text-inverse);
 }
 .k-secthead {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: var(--space-4);
-  margin-bottom: var(--space-8);
+  margin-bottom: var(--space-12);
 }
 @media (min-width: 640px) {
   .k-secthead {
@@ -123,47 +191,128 @@
 .k-grid3 {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: var(--space-4);
+  gap: 0 var(--spacing-40);
 }
+/* Steg: stort tall over en grafittstrek i stedet for kort. */
 .k-step {
   display: flex;
   flex-direction: column;
   gap: var(--space-3);
+  padding: var(--space-6) 0 var(--space-8);
+  border-top: 1px solid var(--border-primary);
 }
 .k-stepnum {
-  font: var(--type-data);
-  font-size: var(--text-caption);
-  color: var(--kobolt-600);
+  margin-bottom: var(--space-6);
+  font: var(--weight-medium) var(--text-heading-xl) / 1 var(--font-display);
+  letter-spacing: var(--tracking-h1);
+  font-variant-numeric: tabular-nums;
 }
+.k-chan {
+  display: flex;
+  gap: var(--space-4);
+  padding: var(--space-6) 0;
+  border-top: 1px solid var(--border-subtle);
+}
+
+/* ---------- flyt (bil, spørsmål, resultat, kanal) ---------- */
 .k-flow {
-  max-width: var(--container-max);
+  max-width: calc(var(--container-flow) + 2 * var(--gutter));
   margin: 0 auto;
-  padding: var(--space-10) var(--space-8) var(--space-20);
+  padding: var(--spacing-56) var(--gutter) var(--spacing-112);
 }
-.k-flowhead {
+.k-flow--narrow {
+  max-width: calc(var(--container-narrow) + 2 * var(--gutter));
+}
+.k-q__legend {
+  margin-bottom: var(--space-4);
+  font: var(--weight-medium) var(--text-subheading) / var(--leading-subheading) var(--font-core);
+}
+.k-q__hint {
+  margin-top: var(--space-3);
+  font: var(--type-body-sm);
+  color: var(--text-secondary);
+}
+.k-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+/* Valg som pille rundt en ekte radioknapp, så piltaster og skjermlesere virker. */
+.k-pill {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  height: var(--control-md);
+  padding: 0 var(--space-5);
+  border-radius: var(--radius-pills);
+  background: var(--surface-muted);
+  font: var(--type-label);
+  cursor: pointer;
+  transition: var(--transition-control);
+}
+.k-pill:hover {
+  background: var(--color-ash);
+}
+.k-pill input {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+.k-pill:has(input:checked) {
+  background: var(--surface-primary);
+  color: var(--text-inverse);
+}
+.k-pill:has(input:focus-visible) {
+  outline: var(--border-width-focus) solid var(--border-focus);
+  outline-offset: 2px;
+}
+/* Kanalkort på resultatsiden. Vinneren er alltid åpen; resten kan foldes ut. */
+.k-winner,
+.k-collapse {
+  --card-pad: clamp(var(--card-padding), 4vw, var(--spacing-48));
+  border-radius: var(--radius-cards);
+}
+.k-winner {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  padding: var(--card-pad);
+}
+.k-collapse__head {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: var(--space-8);
-  margin-bottom: var(--space-10);
+  gap: var(--space-4);
+  width: 100%;
+  padding: var(--space-6) var(--card-pad);
+  background: none;
+  border: 0;
+  border-radius: inherit;
+  text-align: left;
+  /* Under den klebrige toppstripen (60px) når den rulles inn i bildet. */
+  scroll-margin-top: 76px;
 }
-.k-cols {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 340px;
-  gap: var(--space-8);
-  align-items: start;
+.k-collapse__head:hover .k-rowtitle {
+  text-decoration: underline;
+  text-underline-offset: 4px;
 }
-.k-stack {
+.k-collapse__chev {
+  color: var(--text-muted);
+  transition: transform var(--dur-base) var(--ease-out);
+}
+.k-collapse__head:hover .k-collapse__chev {
+  color: var(--text-primary);
+}
+.k-collapse__head[aria-expanded="true"] .k-collapse__chev {
+  transform: rotate(180deg);
+}
+.k-collapse__body {
   display: flex;
   flex-direction: column;
-  gap: var(--space-4);
-}
-.k-aside {
-  position: sticky;
-  top: 96px;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-4);
+  gap: var(--space-6);
+  padding: 0 var(--card-pad) var(--card-pad);
+  animation: k-rise var(--dur-base) var(--ease-entrance) both;
 }
 .k-reveal {
   animation: k-rise var(--dur-reveal) var(--ease-entrance) both;
@@ -179,58 +328,32 @@
   }
 }
 
-.k-svarlink {
-  display: none;
-}
-
 @media (max-width: 860px) {
-  .k-hero,
-  .k-grid3,
-  .k-cols {
+  .k-hero__grid,
+  .k-grid3 {
     grid-template-columns: 1fr;
   }
-  .k-aside {
-    position: static;
-    scroll-margin-top: 84px;
+  .k-hero__grid {
+    gap: var(--spacing-48);
   }
-  .k-nav {
+  .k-section {
+    padding: var(--spacing-56) 0;
+  }
+  .k-nav,
+  .k-bar .bs-steps {
     display: none;
   }
-  .k-h1 {
-    font-size: 38px;
-  }
-  .k-svarlink {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-2);
+  .k-bar__stepcount {
+    display: block;
   }
 }
-
-/* Lenkerader (ProviderRow) på mørk seksjon */
-.k-section--dark .bs-provider {
-  background: transparent;
-  border-color: #ffffff47;
-}
-.k-section--dark .bs-provider:hover {
-  background: #ffffff0d;
-  border-color: var(--text-inverse-secondary);
-}
-.k-section--dark .bs-provider__mark {
-  background: #ffffff14;
-  color: var(--text-inverse);
-}
-.k-section--dark .bs-provider__name {
-  color: var(--text-inverse);
-}
-.k-section--dark .bs-provider__note,
-.k-section--dark .bs-provider__go {
-  color: var(--text-inverse-secondary);
-}
-.k-section--dark .bs-provider:hover .bs-provider__go {
-  color: var(--sitron-300);
-}
-
-/* Tydeligere kant på kort og tagger på forsiden */
-.k-border-strong {
-  border-color: var(--border-strong);
+@media (max-width: 480px) {
+  /* Behold knappens navn for skjermlesere, vis bare ikonet. */
+  .k-bar__end .bs-btn--ghost > span:not(.bs-icon) {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
 }

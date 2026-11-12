@@ -145,11 +145,11 @@ describe("beregnSalgsvurdering", () => {
     expect(kommisjon.raapoeng).toBeLessThan(BASISPOENG.kommisjon);
   });
 
-  it("gir hver kanal minst én justering i taler_for eller taler_mot når poengsummen avviker fra basispoeng", () => {
+  it("gir hver kanal minst én justering i talerFor eller talerMot når poengsummen avviker fra basispoeng", () => {
     const resultat = beregnSalgsvurdering(lagBil({ avregistrert: true }), lagInput());
     for (const kanal of resultat.rangering) {
       if (kanal.raapoeng !== BASISPOENG[kanal.kanal]) {
-        expect(kanal.taler_for.length + kanal.taler_mot.length).toBeGreaterThan(0);
+        expect(kanal.talerFor.length + kanal.talerMot.length).toBeGreaterThan(0);
       }
     }
   });

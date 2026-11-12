@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { RegnrForm } from "./RegnrForm";
+import { DATAFELT, DATAKILDE_LENKER, EKSEMPEL_RADER, HVORDAN, KANALER } from "./landingContent";
 import { scrollTilOppslag } from "../lib/scrollTilOppslag";
-import { Card } from "../design-system/components/core/Card.jsx";
 import { Icon } from "../design-system/components/core/Icon.jsx";
 import { Button } from "../design-system/components/core/Button.jsx";
 import { Callout } from "../design-system/components/core/Callout.jsx";
@@ -11,253 +11,181 @@ import { DisclosureNote } from "../design-system/components/product/DisclosureNo
 import { ProviderRow } from "../design-system/components/product/ProviderRow.jsx";
 
 type Props = {
-    onSubmit: (kjennemerke: string) => void;
-    loading: boolean;
-    feil: string | null;
+  onSubmit: (kjennemerke: string) => void;
+  loading: boolean;
+  feil: string | null;
 };
 
-const HVORDAN = [
-    {
-        n: "01",
-        icon: "search",
-        title: "Slå opp skiltet",
-        text: "Vi henter tekniske data fra Statens vegvesen: modell, år, drivstoff og EU-kontroll.",
-    },
-    {
-        n: "02",
-        icon: "list-checks",
-        title: "Svar på noen spørsmål",
-        text: "Tilstand, kilometerstand, hvor fort bilen må vekk og hvor mye jobb du vil legge i salget.",
-    },
-    {
-        n: "03",
-        icon: "list-ordered",
-        title: "Få kanalene rangert",
-        text: "Seks salgskanaler rangert, med begrunnelse og faktiske tilbydere under hver kanal.",
-    },
-] as const;
-
-const KANALER = [
-    { icon: "users", name: "Privatsalg", text: "Du annonserer selv og selger til en privatperson." },
-    { icon: "gavel", name: "Forhandlerauksjon", text: "Forhandlere byr mot hverandre på bilen din." },
-    { icon: "banknote", name: "Fastpris-oppkjøp", text: "En aktør kjøper bilen direkte til fast pris." },
-    { icon: "store", name: "Kommisjonssalg", text: "Forhandler selger bilen for deg mot provisjon." },
-    { icon: "handshake", name: "Innbytte", text: "Bilen går i bytte mot en ny bil hos forhandler." },
-    { icon: "landmark", name: "Auksjonshus", text: "Åpen auksjon med spesialiserte kjøpergrupper." },
-] as const;
-
-const EKSEMPEL_RADER = [
-    { rank: 1, name: "Forhandlerauksjon", note: "Oppgjør 2–5 dager" },
-    { rank: 2, name: "Fastpris-oppkjøp", note: "Oppgjør 1–3 dager" },
-    { rank: 3, name: "Innbytte", note: "Ved levering" },
-    { rank: 4, name: "Privatsalg", note: "2–8 uker" },
-] as const;
-
-const DATAKILDE_LENKER = [
-    {
-        mark: "SVV",
-        name: "API for tekniske kjøretøyopplysninger",
-        note: "Om API-et, vilkår og bestilling hos vegvesen.no",
-        href: "https://www.vegvesen.no/kjoretoy/kjop-og-salg/kjoretoyopplysninger/api-er-for-tekniske-kjoretoyopplysninger/api-for-tekniske-kjoretoyopplysninger/",
-    },
-    {
-        mark: "API",
-        name: "Dokumentasjon for enkeltoppslag",
-        note: "Beskrivelse av felter og bruk",
-        href: "https://autosys-kjoretoy-api.atlas.vegvesen.no/api-ui/index-api.html?apiId=enkeltoppslag",
-    },
-    {
-        mark: "{ }",
-        name: "Swagger / OpenAPI",
-        note: "Teknisk spesifikasjon av endepunktet",
-        href: "https://akfell-datautlevering.atlas.vegvesen.no/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config#/enkelt-oppslag-resource/hentKjoretoydata",
-    },
-] as const;
+const TO_KOLONNER = "k-wrap grid grid-cols-1 items-center gap-12 md:grid-cols-[1.1fr_0.9fr] md:gap-20";
 
 function SectionHead({ eyebrow, title, action }: { eyebrow: string; title: string; action?: ReactNode }) {
-    return (
-        <div className="k-secthead">
-            <div>
-                <div className="k-eyebrow">{eyebrow}</div>
-                <h2 className="mt-2">{title}</h2>
-            </div>
-            {action}
-        </div>
-    );
+  return (
+    <div className="k-secthead">
+      <div>
+        <div className="k-eyebrow">{eyebrow}</div>
+        <h2>{title}</h2>
+      </div>
+      {action}
+    </div>
+  );
 }
 
 function HeroPreview() {
-    return (
-        <Card pad="md" className="shadow-[var(--shadow-md)]">
-            <div className="mb-4 flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-0">
-                <div>
-                    <div className="k-eyebrow">Eksempel på resultat</div>
-                    <div className="mt-1 [font:var(--type-h4)]">Volkswagen Golf 1.6 TDI</div>
-                </div>
-                <PlateInput size="sm" value="EK 84213" readOnly/>
-            </div>
-            <div className="flex flex-col gap-2">
-                {EKSEMPEL_RADER.map((r) => (
-                    <div
-                        key={r.rank}
-                        className={`flex items-center gap-3 rounded-md border border-line-subtle p-3 ${
-                            r.rank === 1 ? "bg-accent-quiet" : "bg-card"
-                        }`}
-                    >
-                        <RankBadge rank={r.rank} size="sm"/>
-                        <span className="[font:var(--type-label)]">{r.name}</span>
-                        <span className="ml-auto [font:var(--type-caption)] text-ink-muted">{r.note}</span>
-                    </div>
-                ))}
-                <div className="pt-1 [font:var(--type-caption)] text-ink-muted">+ 2 kanaler til</div>
-            </div>
-        </Card>
-    );
+  return (
+    <div className="k-panel">
+      <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <div className="k-eyebrow">Eksempel på resultat</div>
+          <div className="k-rowtitle">Volkswagen Golf 1.6 TDI</div>
+        </div>
+        <PlateInput size="sm" value="EK 84213" readOnly />
+      </div>
+      <ol className="k-rows">
+        {EKSEMPEL_RADER.map((r) => (
+          <li key={r.rank} className="flex items-center gap-3 py-4">
+            <RankBadge rank={r.rank} size="sm" />
+            <span className="[font:var(--type-h4)]">{r.name}</span>
+            <span className="ml-auto text-right [font:var(--type-caption)] text-ink-secondary">
+              {r.note}
+            </span>
+          </li>
+        ))}
+      </ol>
+      <div className="pt-4 [font:var(--type-caption)] text-ink-secondary">+ 2 kanaler til</div>
+    </div>
+  );
 }
 
 export function LandingScreen({ onSubmit, loading, feil }: Props) {
-    return (
-        <div>
-            <div className="k-wrap">
-                <section className="k-hero">
-                    <div>
-                        <div className="k-eyebrow">
-                            <Icon name="shield-check" size={14}/>
-                            Uavhengig · ingen prisvurdering
-                        </div>
-                        <h1 className="k-h1">Hvor bør bilen din selges?</h1>
-                        <p className="k-lead">
-                            Slå opp skiltet, svar på noen spørsmål, og få seks salgskanaler rangert — med
-                            begrunnelse og faktiske tilbydere under hver kanal.
-                        </p>
-                        <div id="skilt-oppslag">
-                            <RegnrForm onSubmit={onSubmit} loading={loading}/>
-                        </div>
-                        {feil && (
-                            <Callout tone="danger" className="mb-4">
-                                {feil}
-                            </Callout>
-                        )}
-                        <DisclosureNote variant="both"/>
-                    </div>
-                    <HeroPreview/>
-                </section>
+  return (
+    <div>
+      <section className="k-hero k-chalk">
+        <div className="k-wrap k-hero__grid">
+          <div>
+            <div className="k-eyebrow">
+              <Icon name="shield-check" size={16} />
+              Uavhengig · ingen prisvurdering
             </div>
-
-            <section id="slik-virker-det" className="k-section bg-card">
-                <div className="k-wrap">
-                    <SectionHead eyebrow="Slik virker det" title="Tre steg, ingen registrering"/>
-                    <div className="k-grid3">
-                        {HVORDAN.map((h) => (
-                            <Card key={h.n} pad="md" className="k-border-strong">
-                                <div className="k-step">
-                                    <div className="flex items-center gap-3">
-                                        <Icon name={h.icon} size={24} strokeColor="var(--kobolt-600)"/>
-                                        <span className="k-stepnum">{h.n}</span>
-                                    </div>
-                                    <h3>{h.title}</h3>
-                                    <p className="[font:var(--type-body-sm)] text-ink-secondary">{h.text}</p>
-                                </div>
-                            </Card>
-                        ))}
-                    </div>
-                </div>
-            </section>
-
-            <section id="salgskanaler" className="k-section">
-                <div className="k-wrap">
-                    <SectionHead
-                        eyebrow="Seks kanaler"
-                        title="Kanalene vi rangerer"
-                        action={
-                            <Button variant="secondary" iconAfter="arrow-right" onClick={scrollTilOppslag}>
-                                Se hva som passer din bil
-                            </Button>
-                        }
-                    />
-                    <div className="k-grid3">
-                        {KANALER.map((c) => (
-                            <Card key={c.name} pad="md" interactive>
-                                <div className="flex items-start gap-3">
-                                    <Icon name={c.icon} size={20} strokeColor="var(--text-muted)" className="mt-0.5"/>
-                                    <div>
-                                        <div className="[font:var(--type-h4)]">{c.name}</div>
-                                        <p className="mt-1 [font:var(--type-body-sm)] text-ink-secondary">{c.text}</p>
-                                    </div>
-                                </div>
-                            </Card>
-                        ))}
-                    </div>
-                </div>
-            </section>
-
-            <section id="om-dataene" className="k-section bg-card">
-                <div className="k-wrap grid grid-cols-1 items-center gap-16 md:grid-cols-[1.1fr_0.9fr]">
-                    <div>
-                        <div className="k-eyebrow">
-                            Om dataene
-                        </div>
-                        <h2 className="my-3">Tekniske data fra registeret, vurderingen fra deg</h2>
-                        <p className="max-w-[48ch] [font:var(--type-body-lg)] text-ink-secondary">
-                            Vi slår opp skiltnummeret hos Statens vegvesen og bruker de tekniske dataene som de
-                            er. Alt som handler om tilstand, hastverk og egeninnsats er dine egne svar. Vi
-                            legger ikke til en verdivurdering.
-                        </p>
-                        <div className="mt-8 flex gap-3">
-                            <Button variant="accent" iconAfter="arrow-right" onClick={scrollTilOppslag}>
-                                Slå opp bilen din
-                            </Button>
-                        </div>
-                    </div>
-                    <Card pad="md" className="k-border-strong">
-                        <div className="mb-4 k-eyebrow">
-                            Dette henter vi
-                        </div>
-                        <div className="flex flex-wrap gap-2">
-                            {["Merke", "Modell", "Registreringsstatus", "Drivstoff", "Girkasse", "Effekt", "Egenvekt", "Karosseri", "Antall seter", "Totalvekt","Euroklasse", "CO2-utslipp", "Rekkevidde", "EU-kontroll"].map(
-                                (t) => (
-                                    <span key={t} className="bs-tag k-border-strong">
-                                        {t}
-                                    </span>
-                                ),
-                            )}
-                        </div>
-                        <div className="mt-6">
-                            <DisclosureNote variant="official"/>
-                        </div>
-                    </Card>
-                </div>
-            </section>
-
-            <section id="datakilde" className="k-section k-section--dark">
-                <div className="k-wrap grid grid-cols-1 items-center gap-16 md:grid-cols-[1.1fr_0.9fr]">
-                    <div>
-                        <div className="k-eyebrow" style={{ color: "var(--sitron-300)" }}>
-                            Datakilde
-                        </div>
-                        <h2 className="my-3 text-ink-inverse">Kjøretøydata fra Statens vegvesen</h2>
-                        <p className="max-w-[52ch] [font:var(--type-body-lg)] text-ink-inverse">
-                            Tekniske kjøretøyopplysninger hentes fra Statens vegvesens API for enkeltoppslag
-                            i motorvognregisteret (Autosys). Dataene er levert av Statens vegvesen og
-                            lisensiert under{" "}
-                            <a
-                                href="https://creativecommons.org/licenses/by/4.0/deed.no"
-                                target="_blank"
-                                rel="noreferrer"
-                                style={{ color: "var(--sitron-300)", textDecorationColor: "currentColor" }}
-                            >
-                                Creative Commons Navngivelse 4.0 (CC BY 4.0)
-                            </a>
-                            . Bilmatch er ikke tilknyttet Statens vegvesen.
-                        </p>
-                    </div>
-                    <div className="flex flex-col gap-2">
-                        {DATAKILDE_LENKER.map((l) => (
-                            <ProviderRow key={l.href} name={l.name} note={l.note} mark={l.mark} href={l.href}/>
-                        ))}
-                    </div>
-                </div>
-            </section>
+            <h1 className="k-h1">Hvor bør bilen din selges?</h1>
+            <p className="k-lead">
+              Slå opp skiltet, svar på noen spørsmål, og få seks salgskanaler rangert — med
+              begrunnelse og faktiske tilbydere under hver kanal.
+            </p>
+            <div id="skilt-oppslag">
+              <RegnrForm onSubmit={onSubmit} loading={loading} />
+            </div>
+            {feil && (
+              <Callout tone="danger" className="mb-4 bg-card">
+                {feil}
+              </Callout>
+            )}
+            <DisclosureNote variant="both" />
+          </div>
+          <HeroPreview />
         </div>
-    );
+      </section>
+
+      <section id="slik-virker-det" className="k-section">
+        <div className="k-wrap">
+          <SectionHead eyebrow="Slik virker det" title="Tre steg, ingen registrering" />
+          <ol className="k-grid3">
+            {HVORDAN.map((h) => (
+              <li key={h.n} className="k-step">
+                <span className="k-stepnum" aria-hidden="true">
+                  {h.n}
+                </span>
+                <h3>{h.title}</h3>
+                <p className="text-ink-secondary">{h.text}</p>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      <section id="salgskanaler" className="k-section k-chalk">
+        <div className="k-wrap">
+          <SectionHead
+            eyebrow="Seks kanaler"
+            title="Kanalene vi rangerer"
+            action={
+              <Button variant="secondary" iconAfter="arrow-right" onClick={scrollTilOppslag}>
+                Se hva som passer din bil
+              </Button>
+            }
+          />
+          <ul className="k-grid3">
+            {KANALER.map((c) => (
+              <li key={c.name} className="k-chan">
+                <Icon name={c.icon} size={24} />
+                <div>
+                  <h3 className="k-h4">{c.name}</h3>
+                  <p className="mt-1 [font:var(--type-body-sm)] text-ink-secondary">{c.text}</p>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      <section id="om-dataene" className="k-section">
+        <div className={TO_KOLONNER}>
+          <div>
+            <div className="k-eyebrow">Om dataene</div>
+            <h2 className="mb-6">Tekniske data fra registeret, vurderingen fra deg</h2>
+            <p className="k-lead">
+              Vi slår opp skiltnummeret hos Statens vegvesen og bruker de tekniske dataene som de
+              er. Alt som handler om tilstand, hastverk og egeninnsats er dine egne svar. Vi
+              legger ikke til en verdivurdering.
+            </p>
+            <div className="mt-8">
+              <Button iconAfter="arrow-right" onClick={scrollTilOppslag}>
+                Slå opp bilen din
+              </Button>
+            </div>
+          </div>
+          <div>
+            <div className="k-eyebrow">Dette henter vi</div>
+            <ul className="flex flex-wrap gap-2">
+              {DATAFELT.map((t) => (
+                <li key={t} className="bs-tag bs-tag--lg">
+                  {t}
+                </li>
+              ))}
+            </ul>
+            <div className="mt-6">
+              <DisclosureNote variant="official" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="datakilde" className="k-section k-section--dark">
+        <div className={TO_KOLONNER}>
+          <div>
+            <div className="k-eyebrow">Datakilde</div>
+            <h2 className="mb-6">Kjøretøydata fra Statens vegvesen</h2>
+            <p className="max-w-[56ch] text-ink-inverse-secondary">
+              Tekniske kjøretøyopplysninger hentes fra Statens vegvesens API for enkeltoppslag
+              i motorvognregisteret (Autosys). Dataene er levert av Statens vegvesen og
+              lisensiert under{" "}
+              <a
+                href="https://creativecommons.org/licenses/by/4.0/deed.no"
+                target="_blank"
+                rel="noreferrer"
+                className="text-ink-inverse"
+              >
+                Creative Commons Navngivelse 4.0 (CC BY 4.0)
+              </a>
+              . Bilmatch er ikke tilknyttet Statens vegvesen.
+            </p>
+          </div>
+          <div className="k-rows">
+            {DATAKILDE_LENKER.map((l) => (
+              <ProviderRow key={l.href} name={l.name} note={l.note} mark={l.mark} href={l.href} />
+            ))}
+          </div>
+        </div>
+      </section>
+    </div>
+  );
 }

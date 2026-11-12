@@ -1,6 +1,6 @@
 import type { Vehicle } from "../vehicle";
 import { BASISPOENG, rules } from "./rules";
-import { leverandorerForKanal, type Leverandor } from "./providers";
+import { leverandorerForKanal } from "./providers";
 import {
   KANAL_BESKRIVELSE,
   KANAL_NAVN,
@@ -10,14 +10,6 @@ import {
   type Salgsvurdering,
   type SalgsvurderingInput,
 } from "./types";
-
-export type KanalResultatMedLeverandorer = KanalResultat & {
-  leverandorer: Leverandor[];
-};
-
-export type SalgsvurderingResultat = Omit<Salgsvurdering, "rangering"> & {
-  rangering: KanalResultatMedLeverandorer[];
-};
 
 /**
  * Rangerer salgskanalene for en konkret bil og en konkret selger.
@@ -29,7 +21,7 @@ export type SalgsvurderingResultat = Omit<Salgsvurdering, "rangering"> & {
 export function beregnSalgsvurdering(
   vehicle: Vehicle,
   input: SalgsvurderingInput,
-): SalgsvurderingResultat {
+): Salgsvurdering {
   const poeng: Record<SalgskanalId, number> = { ...BASISPOENG };
   const alleJusteringer: Justering[] = [];
 
@@ -45,9 +37,7 @@ export function beregnSalgsvurdering(
   const min = Math.min(...verdier);
   const spenn = maks - min || 1;
 
-  const rangering: KanalResultatMedLeverandorer[] = (
-    Object.keys(poeng) as SalgskanalId[]
-  )
+  const rangering: KanalResultat[] = (Object.keys(poeng) as SalgskanalId[])
     .map((kanal) => {
       const forKanal = alleJusteringer.filter((j) => j.kanal === kanal);
       return {
@@ -58,8 +48,8 @@ export function beregnSalgsvurdering(
         // rangerte kanalen er et mulig valg, og en nuller gir feil inntrykk.
         indeks: Math.round(40 + ((poeng[kanal] - min) / spenn) * 60),
         raapoeng: poeng[kanal],
-        taler_for: forKanal.filter((j) => j.poeng > 0).sort((a, b) => b.poeng - a.poeng),
-        taler_mot: forKanal.filter((j) => j.poeng < 0).sort((a, b) => a.poeng - b.poeng),
+        talerFor: forKanal.filter((j) => j.poeng > 0).sort((a, b) => b.poeng - a.poeng),
+        talerMot: forKanal.filter((j) => j.poeng < 0).sort((a, b) => a.poeng - b.poeng),
         leverandorer: leverandorerForKanal(kanal, vehicle, input),
       };
     })

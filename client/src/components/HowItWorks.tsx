@@ -1,15 +1,15 @@
 import { BASISPOENG } from "../../../shared/recommendation/rules";
-import type { KanalResultatMedLeverandorer } from "../../../shared/recommendation/score";
+import type { KanalResultat } from "../../../shared/recommendation/types";
 import { Divider } from "../design-system/components/core/Divider.jsx";
 
 type Props = {
   /** Vinnerkanalen for en konkret bil. Utelates for en helt generell forklaring. */
-  vinner?: KanalResultatMedLeverandorer;
+  vinner?: KanalResultat;
 };
 
 export function HowItWorks({ vinner }: Props) {
   return (
-    <div className="flex flex-col gap-3 text-body-sm text-ink-secondary">
+    <div className="flex flex-col gap-3 text-ink-secondary">
       <p>
         Rangeringen er ikke et prisanslag, men et mål på hvor godt hver salgskanal passer for
         akkurat din bil. Hver kanal starter med et basispoeng for en gjennomsnittlig bil, som
@@ -25,18 +25,18 @@ export function HowItWorks({ vinner }: Props) {
           <Divider />
 
           <div>
-            <div className="mb-2 [font:var(--type-eyebrow)] uppercase tracking-[var(--tracking-eyebrow)] text-ink-muted">
+            <div className="mb-2 [font:var(--type-label)] text-ink">
               Eksempel: slik ble {vinner.navn.toLowerCase()} rangert for din bil
             </div>
 
             <ul className="flex flex-col gap-1.5">
               <li className="flex items-baseline justify-between gap-3">
                 <span>Basispoeng for kanalen</span>
-                <span className="tabular-nums font-medium text-ink-primary">
+                <span className="tabular-nums font-medium text-ink">
                   {BASISPOENG[vinner.kanal]}
                 </span>
               </li>
-              {[...vinner.taler_for, ...vinner.taler_mot]
+              {[...vinner.talerFor, ...vinner.talerMot]
                 .sort((a, b) => b.poeng - a.poeng)
                 .map((j, idx) => (
                   <li key={idx} className="flex items-baseline justify-between gap-3">
@@ -44,7 +44,7 @@ export function HowItWorks({ vinner }: Props) {
                     <span
                       className={
                         "tabular-nums font-medium " +
-                        (j.poeng > 0 ? "text-ink-success" : "text-ink-danger")
+                        (j.poeng > 0 ? "text-ink" : "text-ink-secondary")
                       }
                     >
                       {j.poeng > 0 ? `+${j.poeng}` : j.poeng}
@@ -53,11 +53,13 @@ export function HowItWorks({ vinner }: Props) {
                 ))}
             </ul>
 
-            <Divider className="my-2" />
+            <div className="my-2">
+              <Divider />
+            </div>
 
             <div className="flex items-baseline justify-between gap-3">
-              <span className="font-medium text-ink-primary">Sum</span>
-              <span className="tabular-nums font-semibold text-ink-primary">
+              <span className="font-medium text-ink">Sum</span>
+              <span className="tabular-nums font-semibold text-ink">
                 {vinner.raapoeng} poeng
               </span>
             </div>

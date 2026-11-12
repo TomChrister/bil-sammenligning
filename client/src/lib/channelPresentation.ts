@@ -1,4 +1,4 @@
-import type { SalgskanalId } from "../../../shared/recommendation/types";
+import type { KanalResultat, SalgskanalId } from "../../../shared/recommendation/types";
 
 export type ChannelMeta = { icon: string; label: string };
 
@@ -96,3 +96,11 @@ export const CHANNEL_PRESENTATION: Record<SalgskanalId, ChannelPresentation> = {
     ],
   },
 };
+
+/** Begrunnelsene for en kanal i formatet ReasonList tar: det som taler for først. */
+export function grunnerFor(kanal: KanalResultat) {
+  return [
+    ...kanal.talerFor.map((j) => ({ type: "pro" as const, text: j.grunn })),
+    ...kanal.talerMot.map((j) => ({ type: "con" as const, text: j.grunn })),
+  ];
+}

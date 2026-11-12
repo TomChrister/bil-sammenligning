@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { slaOppKjoretoy } from "./api/vehicleClient";
-import {
-  beregnSalgsvurdering,
-  type KanalResultatMedLeverandorer,
-  type SalgsvurderingResultat,
-} from "../../shared/recommendation/score";
+import { beregnSalgsvurdering } from "../../shared/recommendation/score";
 import type { Vehicle } from "../../shared/vehicle";
-import type { SalgsvurderingInput } from "../../shared/recommendation/types";
+import type {
+  KanalResultat,
+  Salgsvurdering,
+  SalgsvurderingInput,
+} from "../../shared/recommendation/types";
 import { TopBar } from "./components/TopBar";
 import { LandingScreen } from "./components/LandingScreen";
 import { scrollTilOppslag } from "./lib/scrollTilOppslag";
@@ -18,12 +18,24 @@ import { Button } from "./design-system/components/core/Button.jsx";
 
 type Step = "landing" | "vehicle" | "questions" | "results" | "channel-detail";
 
+/** Felles ramme for de smale stegene i flyten. */
+const SMAL_SIDE = "k-flow k-flow--narrow";
+
+/** Plassen hvert steg har i fremdriften i toppstripen. Forsiden viser menyen i stedet. */
+const FLYTSTEG: Record<Step, number | undefined> = {
+  landing: undefined,
+  vehicle: 1,
+  questions: 2,
+  results: 3,
+  "channel-detail": 3,
+};
+
 function App() {
   const [step, setStep] = useState<Step>("landing");
   const [vehicle, setVehicle] = useState<Vehicle | null>(null);
   const [svar, setSvar] = useState<SalgsvurderingInput | null>(null);
-  const [vurdering, setVurdering] = useState<SalgsvurderingResultat | null>(null);
-  const [valgtKanal, setValgtKanal] = useState<KanalResultatMedLeverandorer | null>(null);
+  const [vurdering, setVurdering] = useState<Salgsvurdering | null>(null);
+  const [valgtKanal, setValgtKanal] = useState<KanalResultat | null>(null);
   const [loading, setLoading] = useState(false);
   const [feil, setFeil] = useState<string | null>(null);
 
@@ -32,8 +44,6 @@ function App() {
   }, [step]);
 
   async function handleOppslag(kjennemerke: string) {
-    if (kjennemerke.trim().length === 0) return;
-
     setLoading(true);
     setFeil(null);
 
@@ -67,7 +77,7 @@ function App() {
 
   return (
     <div className="k-shell">
-      <TopBar onHome={startPaNytt} onStart={scrollTilOppslag} compact={step !== "landing"} />
+      <TopBar onHome={startPaNytt} onStart={scrollTilOppslag} flowStep={FLYTSTEG[step]} />
 
       <main className="k-main">
         {step === "landing" && (
@@ -75,19 +85,26 @@ function App() {
         )}
 
         {step === "vehicle" && vehicle && (
-          <div className="mx-auto flex max-w-[var(--container-narrow)] flex-col gap-6 px-4 py-10">
+          <div className={SMAL_SIDE}>
             <VehicleResult vehicle={vehicle} />
-            <div className="flex justify-between">
-              <Button variant="ghost" onClick={startPaNytt}>
-                Tilbake
+            <div className="mt-10 flex flex-wrap items-center justify-between gap-3">
+              <Button variant="ghost" icon="arrow-left" className="-ml-6" onClick={startPaNytt}>
+                Feil bil? Søk på nytt
               </Button>
-              <Button onClick={() => setStep("questions")}>Neste</Button>
+              <Button
+                variant="accent"
+                size="lg"
+                iconAfter="arrow-right"
+                onClick={() => setStep("questions")}
+              >
+                Dette stemmer
+              </Button>
             </div>
           </div>
         )}
 
         {step === "questions" && (
-          <div className="mx-auto max-w-[var(--container-narrow)] px-4 py-10">
+          <div className={SMAL_SIDE}>
             <ConditionForm onSubmit={handleSalgsvurdering} initial={svar} />
           </div>
         )}
@@ -102,12 +119,11 @@ function App() {
               setStep("channel-detail");
             }}
             onRediger={() => setStep("questions")}
-            onRestart={startPaNytt}
           />
         )}
 
         {step === "channel-detail" && valgtKanal && (
-          <div className="mx-auto max-w-[var(--container-narrow)] px-4 py-10">
+          <div className={SMAL_SIDE}>
             <ChannelDetailView kanal={valgtKanal} onTilbake={() => setStep("results")} />
           </div>
         )}
