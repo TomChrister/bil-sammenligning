@@ -1,5 +1,5 @@
 import type { Vehicle } from "../vehicle";
-import type { Rule, SalgskanalId } from "./types";
+import type { Regelutslag, Rule, SalgskanalId } from "./types";
 
 /**
  * Vektskala. Alle tall i regelsettet skal hentes herfra, slik at justering av
@@ -133,7 +133,7 @@ const kilometerstandRegel: Rule = {
   apply: (vehicle, input) => {
     const alder = alderIAr(vehicle);
     const km = input.kilometerstand;
-    const ut: ReturnType<Rule["apply"]> = [];
+    const ut: Regelutslag[] = [];
 
     if (km >= 250_000) {
       ut.push(
@@ -282,7 +282,7 @@ const veteranRegel: Rule = {
 const euKontrollRegel: Rule = {
   id: "eu-kontroll",
   apply: (vehicle) => {
-    const ut: ReturnType<Rule["apply"]> = [];
+    const ut: Regelutslag[] = [];
     const tilFrist = dagerTil(vehicle.euKontrollfrist);
 
     if (tilFrist !== null) {

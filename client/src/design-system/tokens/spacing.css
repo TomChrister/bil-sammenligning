@@ -1,5 +1,5 @@
 :root {
-  /* 4px base grid. Sub-grid step (6) exists for control internals only. */
+  /* 4px-rutenett for kontrollenes indre mål. Seksjonsrytme bruker --spacing-* fra variables.css. */
   --space-1: 6px;
   --space-2: 8px;
   --space-3: 12px;
@@ -13,8 +13,10 @@
   --space-20: 80px;
 
   /* Layout */
-  --container-max: 1250px;
-  --container-narrow: 840px;
+  --gutter: clamp(20px, 4vw, 40px);
+  --container-max: var(--page-max-width);
+  --container-flow: 960px;
+  --container-narrow: 720px;
 
   /* Control heights — 44px is the minimum touch target */
   --control-sm: 36px;

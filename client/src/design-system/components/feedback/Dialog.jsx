@@ -25,7 +25,7 @@ export function Dialog({ open = false, title, icon, children, footer, onClose, c
         {...rest}
       >
         <div className="bs-dialog__head">
-          {icon ? <Icon name={icon} size={24} strokeColor="var(--kobolt-600)" /> : null}
+          {icon ? <Icon name={icon} size={24} /> : null}
           <span className="bs-dialog__title">{title}</span>
           {onClose ? <IconButton icon="x" label="Lukk" onClick={onClose} style={{ marginLeft: "auto" }} /> : null}
         </div>

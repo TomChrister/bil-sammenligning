@@ -1,23 +1,12 @@
+/* Radier kommer fra variables.css: knapper 40px, chips/piller helt runde, kort og
+   bilder 20px, inndata 4px. Flatene er flate: hårstrek fremfor skygge. */
 :root {
-  /* Radii — geometric, never fully soft. Cards 14, controls 10. */
-  --radius-xs: 4px;
-  --radius-sm: 6px;
-  --radius-md: 10px;
-  --radius-lg: 14px;
-  --radius-xl: 20px;
-  --radius-pill: 999px;
+  --radius-pill: var(--radius-pills);
 
-  /* Borders */
   --border-width: 1px;
   --border-width-strong: 1.5px;
   --border-width-focus: 2px;
 
-  /* Shadows — cool-tinted, low spread. Elevation is rare; borders do most of the work. */
-  --shadow-xs: 0 1px 2px #0d111610;
-  --shadow-sm: 0 1px 2px #0d11160f, 0 2px 6px #0d11160d;
-  --shadow-md: 0 2px 4px #0d11160d, 0 10px 24px -6px #0d11161a;
-  --shadow-lg: 0 8px 12px -6px #0d111614, 0 28px 56px -16px #0d111633;
-
-  /* Blur — only for sticky chrome over content */
-  --blur-chrome: saturate(140%) blur(14px); /* @kind other */
+  /* Eneste skygge i bruk: flytende paneler (dialog). */
+  --shadow-float: 0 8px 24px rgba(159, 161, 184, 0.2);
 }

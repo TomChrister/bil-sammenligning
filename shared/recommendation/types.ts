@@ -1,3 +1,6 @@
+import type { Vehicle } from "../vehicle";
+import type { Leverandor } from "./providers";
+
 // Kanaltyper (arketyper), ikke enkeltaktører.
 // Poengsystemet rangerer arketyper. Aktørene ligger i providers.ts og filtreres
 // inn under den arketypen de tilhører. Det er dette som gjør tjenesten til en
@@ -69,10 +72,13 @@ export type Justering = {
   regel: string;
 };
 
+/** Det en regel returnerer. Regel-id-en legges på av score.ts. */
+export type Regelutslag = Omit<Justering, "regel">;
+
 export type Rule = {
   id: string;
   /** Kjøres alltid, men kan returnere tom liste. */
-  apply: (vehicle: import("../vehicle").Vehicle, input: SalgsvurderingInput) => Omit<Justering, "regel">[];
+  apply: (vehicle: Vehicle, input: SalgsvurderingInput) => Regelutslag[];
 };
 
 export type KanalResultat = {
@@ -82,8 +88,10 @@ export type KanalResultat = {
   /** Relativ indeks 40 til 100. Dette er en rangering, ikke et prisanslag. */
   indeks: number;
   raapoeng: number;
-  taler_for: Justering[];
-  taler_mot: Justering[];
+  talerFor: Justering[];
+  talerMot: Justering[];
+  /** Aktørene i kanalen som tar imot denne bilen. */
+  leverandorer: Leverandor[];
 };
 
 export type Salgsvurdering = {

@@ -1,102 +1,62 @@
+/* Semantiske aliaser oppå paletten i variables.css. Komponenter bruker disse,
+   aldri palettnavnene direkte. Systemet er monokromt: grafitt, betong og hvitt,
+   med Solar Yellow spart til ett hovedgrep per skjerm. */
 :root {
-  /* ---------- Asphalt: cool neutral ramp (the brand's structural colour) ---------- */
-  --asphalt-0: #ffffff;
-  --asphalt-25: #f7f8fa;
-  --asphalt-50: #f1f3f6;
-  --asphalt-100: #e6e9ee;
-  --asphalt-200: #d3d8e0;
-  --asphalt-300: #b2bac6;
-  --asphalt-400: #8a93a2;
-  --asphalt-500: #67707f;
-  --asphalt-600: #4c5462;
-  --asphalt-700: #363d48;
-  --asphalt-800: #232932;
-  --asphalt-950: #0d1116;
-
-  /* ---------- Kobolt: primary. Trust, links, primary actions ---------- */
-  --kobolt-50: #eef1fe;
-  --kobolt-200: #b9c6fb;
-  --kobolt-400: #5d74f0;
-  --kobolt-500: #2f4be6;
-  --kobolt-600: #1f37cc;
-  --kobolt-700: #182ba3;
-  --kobolt-800: #152478;
-
-  /* ---------- Sitron: acid accent. Rank 1, highlights, on-dark CTAs ---------- */
-  --sitron-300: #d8fb63;
-  --sitron-400: #c8f03a;
-  --sitron-500: #afd91f;
-  --sitron-600: #8aad12;
-
-  /* ---------- Semantic hues ---------- */
-  --gronn-100: #e4f5ee;
-  --gronn-500: #12906a;
-  --gronn-700: #0b5c42;
-
-  --amber-100: #fdf1df;
-  --amber-500: #c47a0e;
-  --amber-600: #a9650a;
-  --amber-700: #7f4b06;
-
-  --rust-100: #fcebe8;
-  --rust-500: #d24232;
-  --rust-600: #b93326;
-  --rust-700: #8f271d;
-
-  /* ================= Semantic aliases: use these in components ================= */
-
   /* Text */
-  --text-primary: var(--asphalt-950);
-  --text-secondary: var(--asphalt-600);
-  --text-muted: var(--asphalt-500);
-  --text-faint: var(--asphalt-400);
-  --text-inverse: var(--asphalt-0);
-  --text-inverse-secondary: var(--asphalt-300);
-  --text-link: var(--kobolt-600);
-  --text-link-hover: var(--kobolt-700);
-  --text-on-accent: var(--asphalt-950);
-  --text-success: var(--gronn-700);
-  --text-warning: var(--amber-700);
-  --text-danger: var(--rust-700);
+  --text-primary: var(--color-graphite);
+  --text-secondary: var(--color-steel);
+  /* Fog (#b8b8b8) er for lys til lesbar tekst på hvitt, så dempet tekst bruker Steel. */
+  --text-muted: var(--color-steel);
+  --text-faint: var(--color-fog);
+  --text-inverse: var(--color-paper);
+  --text-inverse-secondary: var(--color-fog);
+  --text-link: var(--color-graphite);
+  --text-link-hover: var(--color-pure-black);
+  --text-on-accent: var(--color-graphite);
+  /* Statustekst er grafitt; fargen bæres av ikon og markør (se --status-*). */
+  --text-success: var(--color-graphite);
+  --text-warning: var(--color-graphite);
+  --text-danger: var(--color-graphite);
 
-  /* Surfaces */
-  --surface-page: var(--asphalt-25);
-  --surface-card: var(--asphalt-0);
-  --surface-sunken: var(--asphalt-50);
-  --surface-muted: var(--asphalt-100);
-  --surface-inverse: var(--asphalt-950);
-  --surface-primary: var(--kobolt-500);
-  --surface-primary-hover: var(--kobolt-600);
-  --surface-primary-quiet: var(--kobolt-50);
-  --surface-accent: var(--sitron-400);
-  --surface-success-quiet: var(--gronn-100);
-  --surface-warning-quiet: var(--amber-100);
-  --surface-danger-quiet: var(--rust-100);
+  /* Surfaces: løft skjer med flateskift (paper → chalk → concrete), ikke skygger */
+  --surface-page: var(--color-paper);
+  --surface-card: var(--color-paper);
+  --surface-sunken: var(--color-chalk);
+  --surface-muted: var(--color-concrete);
+  --surface-inverse: var(--color-graphite);
+  --surface-primary: var(--color-graphite);
+  --surface-primary-hover: var(--color-pure-black);
+  --surface-accent: var(--color-solar-yellow);
 
   /* Borders */
-  --border-subtle: var(--asphalt-100);
-  --border-default: var(--asphalt-200);
-  --border-strong: var(--asphalt-300);
+  --border-subtle: var(--color-concrete);
+  --border-default: var(--color-ash);
+  --border-strong: var(--color-steel);
   --border-inverse: #ffffff1f;
-  --border-primary: var(--kobolt-500);
-  --border-focus: var(--kobolt-500);
+  --border-primary: var(--color-graphite);
+  --border-focus: var(--color-graphite);
 
-  /* Plate (Norwegian registration plate) */
+  /* Status-markører (ikoner, målersegmenter) */
+  --status-good: var(--color-forest-green);
+  --status-warn: var(--color-solar-yellow);
+  --status-bad: var(--color-canyon-orange);
+
+  /* Rangering: én grønnskala, mettest for plass 1 og blekere nedover.
+     Tallet er grafitt på alle trinn (5,5:1 mot full grønn). */
+  --rank-1: var(--color-forest-green);
+  --rank-2: color-mix(in srgb, var(--color-forest-green) 78%, var(--color-paper));
+  --rank-3: color-mix(in srgb, var(--color-forest-green) 60%, var(--color-paper));
+  --rank-4: color-mix(in srgb, var(--color-forest-green) 45%, var(--color-paper));
+  --rank-5: color-mix(in srgb, var(--color-forest-green) 32%, var(--color-paper));
+  --rank-rest: color-mix(in srgb, var(--color-forest-green) 22%, var(--color-paper));
+
+  /* Plate (norsk registreringsskilt): et fysisk objekt, beholder egne farger */
   --plate-face: #ffffff;
-  --plate-ink: #16181c;
+  --plate-ink: var(--color-graphite);
   --plate-band: #0a2a8c;
   --plate-band-ink: #ffffff;
 
-  /* Rank ladder — used by the channel ranking, strongest to weakest */
-  --rank-1: var(--sitron-400);
-  /* Kobolt ramp fades with rank so lower places read as less prominent. */
-  --rank-2: var(--kobolt-700);
-  --rank-3: var(--kobolt-600);
-  --rank-4: var(--kobolt-500);
-  --rank-5: var(--kobolt-400);
-  --rank-rest: var(--kobolt-200);
-
   /* Effects */
-  --overlay-scrim: #0d1116b8;
-  --focus-ring: 0 0 0 3px #2f4be647;
+  --overlay-scrim: #151515b8;
+  --focus-ring: 0 0 0 3px #15151529;
 }

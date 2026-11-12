@@ -5,7 +5,6 @@ import type {
   SalgsvurderingInput,
   Tilstand,
 } from "../../../shared/recommendation/types";
-import { ChoiceCard } from "../design-system/components/forms/ChoiceCard.jsx";
 import { RangeSlider } from "../design-system/components/forms/RangeSlider.jsx";
 import { Input } from "../design-system/components/forms/Input.jsx";
 import { Checkbox } from "../design-system/components/forms/Checkbox.jsx";
@@ -50,31 +49,42 @@ function formatVerdi(raw: string) {
   return siffer.replace(/\B(?=(\d{3})+(?!\d))/g, " ");
 }
 
+/** Enkeltvalg som piller. Forklaringen til det valgte alternativet vises under. */
 function ChoiceGroup<T extends string>({
   legend,
+  name,
   options,
   value,
   onChange,
 }: {
   legend: string;
+  name: string;
   options: { verdi: T; label: string; description?: string }[];
   value: T;
   onChange: (verdi: T) => void;
 }) {
+  const valgt = options.find((o) => o.verdi === value);
   return (
-    <fieldset className="flex flex-col gap-2">
-      <legend className="mb-1 text-body-sm font-medium text-ink">{legend}</legend>
-      <div role="radiogroup" aria-label={legend} className="flex flex-col gap-3">
+    <fieldset>
+      <legend className="k-q__legend">{legend}</legend>
+      <div className="k-pills">
         {options.map((o) => (
-          <ChoiceCard
-            key={o.verdi}
-            label={o.label}
-            description={o.description}
-            selected={value === o.verdi}
-            onClick={() => onChange(o.verdi)}
-          />
+          <label key={o.verdi} className="k-pill">
+            <input
+              type="radio"
+              name={name}
+              checked={value === o.verdi}
+              onChange={() => onChange(o.verdi)}
+            />
+            {o.label}
+          </label>
         ))}
       </div>
+      {valgt?.description && (
+        <p className="k-q__hint" aria-live="polite">
+          {valgt.description}
+        </p>
+      )}
     </fieldset>
   );
 }
@@ -111,7 +121,12 @@ export function ConditionForm({ onSubmit, initial }: Props) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+    <form onSubmit={handleSubmit} className="flex flex-col gap-12">
+      <header>
+        <h1>Fortell oss om bilen</h1>
+        <p className="k-lead mt-4">Svarene dine avgjør rekkefølgen på salgskanalene.</p>
+      </header>
+
       <RangeSlider
         id="kilometerstand"
         label="Kilometerstand"
@@ -124,21 +139,24 @@ export function ConditionForm({ onSubmit, initial }: Props) {
         onChange={(e) => setKilometerstand(Number(e.target.value))}
       />
 
-      <ChoiceGroup legend="Tilstand" options={TILSTANDER} value={tilstand} onChange={setTilstand} />
+      <ChoiceGroup legend="Tilstand" name="tilstand" options={TILSTANDER} value={tilstand} onChange={setTilstand} />
       <ChoiceGroup
         legend="Hvor fort må bilen vekk?"
+        name="hastverk"
         options={HASTVERK}
         value={hastverk}
         onChange={setHastverk}
       />
       <ChoiceGroup
         legend="Hvor mye jobb vil du legge i salget?"
+        name="innsats"
         options={INNSATS}
         value={onsketInnsats}
         onChange={setOnsketInnsats}
       />
       <ChoiceGroup
         legend="Pant eller gjeld registrert på bilen?"
+        name="heftelser"
         options={HEFTELSER}
         value={heftelser}
         onChange={setHeftelser}
@@ -163,7 +181,7 @@ export function ConditionForm({ onSubmit, initial }: Props) {
         onChange={(e) => setPlanleggerNybilkjop(e.target.checked)}
       />
 
-      <Button type="submit" size="lg">
+      <Button type="submit" variant="accent" size="lg" iconAfter="arrow-right" className="self-start">
         Få anbefaling
       </Button>
     </form>

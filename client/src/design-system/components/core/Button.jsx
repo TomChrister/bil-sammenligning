@@ -1,8 +1,8 @@
 import { Icon } from "./Icon.jsx";
 
 /**
- * Primary interactive control. Variants: primary (kobolt), secondary (bordered),
- * ghost, accent (sitron, on dark), danger. Sizes sm/md/lg.
+ * Primary interactive control. Variants: primary (graphite), secondary (outline),
+ * ghost, accent (Solar Yellow, one per screen), danger. Sizes sm/md/lg.
  */
 export function Button({
   children,
